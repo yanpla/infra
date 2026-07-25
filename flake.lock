@@ -251,11 +251,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1783493477,
-        "narHash": "sha256-J6UF9aHSCdmD0MxJAdMZ1+o2quzptwprxqc/NeE8BVQ=",
+        "lastModified": 1784962077,
+        "narHash": "sha256-Gw/fnv0QoTnNkcSKfzJZ1tZoQAJUJcKHtE7zJCBe1Jk=",
         "owner": "ryoppippi",
         "repo": "nix-vite-plus",
-        "rev": "f82a084742cfa30ac50a5f2b809f7ff205023c44",
+        "rev": "007724d2f262cad34d2d41e8bb81f260b2e07981",
         "type": "github"
       },
       "original": {
@@ -471,11 +471,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1784580626,
-        "narHash": "sha256-RrRc1dVaIeX103ZO4r4LaR8omeWeDfsAYrk0jZfwhWc=",
+        "lastModified": 1784983689,
+        "narHash": "sha256-qDyKXcO199P53VOUu4ke7tdWF8zNzgIRhW3/OK47Agw=",
         "ref": "refs/heads/main",
-        "rev": "288d9c892640399d52f56bfaafb08c124f1212d7",
-        "revCount": 60,
+        "rev": "e3ae19cddf754306a72517b2d08a8b614e5faeb4",
+        "revCount": 64,
         "type": "git",
         "url": "ssh://git@github.com/yanpla/website"
       },
