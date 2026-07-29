@@ -5,9 +5,6 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
-    rust-overlay.url = "github:oxalica/rust-overlay";
-    rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
-
     colmena.url = "github:zhaofengli/colmena";
     colmena.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -25,7 +22,6 @@
     den.url = "github:denful/den";
     import-tree.url = "github:denful/import-tree";
 
-    # Pinned to a branch bumping flake inputs / Rust toolchain.
     calagopus-nix.url = "github:Saturn745/calagopus-nix";
     calagopus-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
