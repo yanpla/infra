@@ -4,11 +4,22 @@
   den.aspects.t3code.nixos =
     { pkgs-unstable, ... }:
     {
+      # t3code drives `tailscale serve` itself and fetches its own tailnet cert,
+      # both of which are root-gated unless `yanpla` is the operator.
+      services.tailscale = {
+        extraSetFlags = [ "--operator=yanpla" ];
+        permitCertUid = "yanpla";
+      };
+
       systemd.services.t3code = {
         description = "t3code web server";
         wantedBy = [ "multi-user.target" ];
-        after = [ "network-online.target" ];
+        after = [
+          "network-online.target"
+          "tailscaled.service"
+        ];
         wants = [ "network-online.target" ];
+        requires = [ "tailscaled.service" ];
         environment = {
           T3CODE_HOME = "/var/lib/t3code";
         };
@@ -21,14 +32,14 @@
           python3
           git
           gh
+          tailscale # t3code shells out to `tailscale serve`
         ];
         serviceConfig = {
           User = "yanpla";
           Group = "users";
           StateDirectory = "t3code";
           WorkingDirectory = "/home/yanpla";
-          # npx caches under $HOME (T3CODE_HOME), so updates land on restart.
-          ExecStart = "${pkgs-unstable.nodejs}/bin/npx -y t3@nightly serve --host 0.0.0.0 --port 3773";
+          ExecStart = "${pkgs-unstable.nodejs}/bin/npx -y t3@0.0.31 serve --host 0.0.0.0 --port 3773 --tailscale-serve";
           Restart = "on-failure";
           RestartSec = "5s";
         };
