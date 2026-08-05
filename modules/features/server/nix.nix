@@ -2,21 +2,24 @@
   den.aspects.nix-settings.nixos =
     { config, lib, ... }:
     let
-      # alpha is the only machine worth building on (16 threads, 30G) — zimaboard
-      # and tunneler are small. Note alpha is also the box that hard-resets under
-      # compile load; the boost cap in modules/hosts/alpha.nix is what makes it
-      # survive a full calagopus-panel build. If builds start dying, look there.
+      # alpha is the only machine worth building on (16 threads, 30G). zimaboard
+      # is the only machine builds are ever started from, so it is the only
+      # client — beta and tunneler build for themselves and never offload.
+      # Note alpha is also the box that hard-resets under compile load; the boost
+      # cap in modules/hosts/alpha.nix is what makes it survive a full
+      # calagopus-panel build. If builds start dying, look there.
       builder = "alpha";
+      client = "zimaboard";
+
       isBuilder = config.networking.hostName == builder;
+      isClient = config.networking.hostName == client;
 
       # Host-to-host auth reuses each machine's existing SSH host key, so no new
       # secret has to be provisioned or kept out of this repo. Only the public
       # halves live here.
       hostKeys = {
         alpha = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIATH4iTe7Q7vAB6zYSmMl4ueQN/Rd6jg57fqFl6kM6Sr root@alpha";
-        beta = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAKIZOB28fU1Z/r/nloB3rKOyoiaon0IaPxmUdRJRljt root@beta";
         zimaboard = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL1fVUBovD8EimpQGVX8ZivvBVZzSAlr7MRoEVEOmk/e root@zimaboard";
-        tunneler = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMwFoQe4HtYCZ2NRXzglBq1Vrk8pP4BYGCOw1etR/TRq root@tunneler";
       };
     in
     {
@@ -32,9 +35,9 @@
           builders-use-substitutes = true;
         };
 
-        distributedBuilds = !isBuilder; # alpha builds for itself locally
+        distributedBuilds = isClient;
 
-        buildMachines = lib.optional (!isBuilder) {
+        buildMachines = lib.optional isClient {
           hostName = builder; # tailnet MagicDNS name
           protocol = "ssh-ng";
           sshUser = "root";
@@ -58,17 +61,27 @@
         optimise.automatic = true;
       };
 
-      # Clients need alpha's host key up front: root's ssh runs non-interactively
-      # and would otherwise refuse to connect.
-      programs.ssh.knownHosts = lib.mkIf (!isBuilder) {
+      # The client needs alpha's host key up front: root's ssh runs
+      # non-interactively and would otherwise refuse to connect.
+      programs.ssh.knownHosts = lib.mkIf isClient {
         ${builder}.publicKey = hostKeys.${builder};
       };
 
-      # Builder side: accept the other machines' host keys as root. That is
-      # root-equivalent access to alpha from those hosts, which the admin keys in
+      # Without keepalives, an alpha hard-reset mid-build leaves the remote-build
+      # ssh connection hanging forever and the whole deploy just stops. This
+      # makes it die in ~1min so nix reports a failure instead.
+      programs.ssh.extraConfig = lib.mkIf isClient ''
+        Host ${builder}
+          ConnectTimeout 10
+          ServerAliveInterval 15
+          ServerAliveCountMax 4
+      '';
+
+      # Builder side: accept the client's host key as root. That is
+      # root-equivalent access to alpha from zimaboard, which the admin keys in
       # admin.nix already grant from elsewhere.
-      users.users.root.openssh.authorizedKeys.keys = lib.mkIf isBuilder (
-        lib.attrValues (lib.filterAttrs (name: _: name != builder) hostKeys)
-      );
+      users.users.root.openssh.authorizedKeys.keys = lib.mkIf isBuilder [
+        hostKeys.${client}
+      ];
     };
 }
