@@ -13,6 +13,8 @@
       systemd.services.calagopus-wings = {
         description = "Calagopus Wings";
         wantedBy = [ "multi-user.target" ];
+        # wings shells out to useradd/groupadd if the runner user is missing.
+        path = [ pkgs.shadow ];
         after = [
           "network-online.target"
           "docker.service"
@@ -29,12 +31,12 @@
         };
       };
 
-      # Game-server runner user (config `system.username`, default "pterodactyl").
-      # Declared here since wings would otherwise shell out to `useradd`.
-      users.groups.pterodactyl = { };
-      users.users.pterodactyl = {
+      # Game-server runner user, matching `system.username` in the panel-issued
+      # config. Declared here so wings finds it instead of creating it.
+      users.groups.calagopus = { };
+      users.users.calagopus = {
         isSystemUser = true;
-        group = "pterodactyl";
+        group = "calagopus";
         description = "Calagopus wings server runner";
       };
 
