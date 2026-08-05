@@ -7,6 +7,7 @@ in
     includes = [
       den.aspects.server
       den.aspects.tunneler-hardware
+      den.aspects.postfix
     ];
     nixos = {
       networking.useDHCP = false;
