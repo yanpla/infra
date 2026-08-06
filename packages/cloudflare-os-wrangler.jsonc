@@ -25,6 +25,10 @@
       {
         "name": "PENDING_LOGIN",
         "class_name": "PendingLogin"
+      },
+      {
+        "name": "API_DURABLE_OBJECT",
+        "class_name": "ApiDurableObject"
       }
     ]
   },
@@ -40,6 +44,10 @@
     {
       "tag": "v2",
       "new_sqlite_classes": ["PendingLogin"]
+    },
+    {
+      "tag": "v3",
+      "new_sqlite_classes": ["ApiDurableObject"]
     }
   ],
   "assets": {

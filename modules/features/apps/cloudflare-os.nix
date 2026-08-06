@@ -89,6 +89,7 @@
       systemd.services.cloudflare-os = {
         description = "Cloudflare OS Durable Object runtime";
         wantedBy = [ "multi-user.target" ];
+        restartTriggers = [ cloudflareOs ];
         after = [
           "network-online.target"
           "cloudflare-os-deploy.service"

@@ -1,0 +1,138 @@
+diff --git a/packages/workshop-backend/src/server.ts b/packages/workshop-backend/src/server.ts
+index a5c7124..b7967a7 100644
+--- a/packages/workshop-backend/src/server.ts
++++ b/packages/workshop-backend/src/server.ts
+@@ -21,7 +21,7 @@ import { BlueprintKvRecord, buildBlueprintArchiveStream, sanitizeBlueprintOutput
+ import { GatekeeperConnectCallbackImpl, normalizeUsername, UserDurableObject, CLOUDFLARE_VENDOR_ID } from "./user";
+ import { OverseerDurableObject, GatekeeperLoopback, CodeModeTailLoopback, AgentSpawnerGatekeeper, GatekeeperHookLoopback, GadgetTailLoopback, AgentSelfLoopback, TransientStubLoopback } from "./overseer";
+ import { ExternalMessageGateway } from "./external-message-gateway";
+-import { RpcStub as NativeRpcStub } from "cloudflare:workers";
++import { DurableObject, RpcStub as NativeRpcStub } from "cloudflare:workers";
+ import { recordAnalytics } from "./analytics";
+ import { handleClientErrorRequest } from "./client-errors.js";
+ import { verifyCfAccessJwt } from "./access.js";
+@@ -778,6 +778,57 @@ class PublicApiImpl extends RpcTarget implements PublicApi {
+   }
+ }
+ 
++export class ApiDurableObject extends DurableObject<Env> {
++  async fetch(req: Request): Promise<Response> {
++    let url = new URL(req.url);
++
++    if (!formatBlueprintInstallStarted) {
++      formatBlueprintInstallStarted = true;
++      this.ctx.waitUntil(this.ctx.exports.AdminSettings.getByName("").ensureFormatBlueprintsInstalled()
++          .then((complete: boolean) => {
++            if (!complete) formatBlueprintInstallStarted = false;
++          })
++          .catch((err: unknown) => {
++            formatBlueprintInstallStarted = false;
++            logger.warn("failed to install bundled format blueprints", {
++              event: "formats.install.trigger.failed", error: err,
++            });
++          }));
++    }
++
++    let accessPayload: JWTPayload | undefined;
++
++    if (this.env.CF_ACCESS_AUD) {
++      if (req.headers.get("Origin") !== url.origin) {
++        return new Response("Cross-origin API access not allowed.", { status: 403 });
++      }
++
++      const payload = await verifyCfAccessJwt(req, this.env);
++      if (!payload) return new Response("Invalid CF access JWT.", { status: 403 });
++
++      if (!payload.email) {
++        return new Response("Access JWT didn't specify email address.", { status: 403 });
++      }
++
++      accessPayload = payload;
++    }
++
++    let resp: Response | undefined;
++    let aborted = false;
++    let abortSession = (_reason: Error) => {
++      aborted = true;
++      resp?.webSocket?.close();
++    };
++
++    resp = await newWorkersRpcResponse(req,
++        new PublicApiImpl(this.ctx as unknown as ExecutionContext,
++            this.env, abortSession, accessPayload));
++
++    if (aborted) resp.webSocket?.close();
++    return resp;
++  }
++}
++
+ export default {
+   async fetch(req: Request, env: Env, ctx: ExecutionContext) {
+     let url = new URL(req.url);
+@@ -801,63 +852,9 @@ export default {
+     }
+ 
+     if (url.pathname === "/api") {
+-      // Make sure the bundled format blueprints are installed. The AdminSettings DO doesn't wake
+-      // merely because someone deployed, so the install needs a trigger; hanging it off API
+-      // traffic means a fresh deployment is provisioned by its first visitor. Fire-and-forget,
+-      // and the DO is idempotent.
+-      if (!formatBlueprintInstallStarted) {
+-        formatBlueprintInstallStarted = true;
+-        ctx.waitUntil(ctx.exports.AdminSettings.getByName("").ensureFormatBlueprintsInstalled()
+-            .then((complete: boolean) => {
+-              // A partial install resolves rather than throwing, and nothing else will call the DO
+-              // from here, so clearing this is the whole retry: one bad archive would otherwise
+-              // leave the deployment half-provisioned for as long as the isolate lives.
+-              if (!complete) formatBlueprintInstallStarted = false;
+-            })
+-            .catch((err: unknown) => {
+-              // Likewise let the next request try again. The DO coalesces concurrent callers, so a
+-              // retry costs one comparison once it succeeds.
+-              formatBlueprintInstallStarted = false;
+-              logger.warn("failed to install bundled format blueprints", {
+-                event: "formats.install.trigger.failed", error: err,
+-              });
+-            }));
+-      }
+-
+-      let accessPayload: JWTPayload | undefined;
+-
+-      if (env.CF_ACCESS_AUD) {
+-        if (req.headers.get("Origin") !== url.origin) {
+-          return new Response("Cross-origin API access not allowed.", { status: 403 });
+-        }
+-
+-        const payload = await verifyCfAccessJwt(req, env);
+-        if (!payload) return new Response("Invalid CF access JWT.", { status: 403 });
+-
+-        if (!payload.email) {
+-          return new Response("Access JWT didn't specify email address.", { status: 403 });
+-        }
+-
+-        accessPayload = payload;
+-      }
+-
+-      // HACK: Implement `abortSession` callback by closing the websocket.
+-      // TODO: When ctx.abort() becomes non-experimental, consider using that instead.
+-      let resp: Response | undefined;
+-      let aborted = false;
+-      let abortSession = (reason: Error) => {
+-        aborted = true;
+-        resp?.webSocket?.close();
+-      };
+-
+-      resp = await newWorkersRpcResponse(req,
+-          new PublicApiImpl(ctx, env, abortSession, accessPayload));
+-
+-      if (aborted) {
+-        // Oops, we missed the abortSession() call while awaiting, apply now.
+-        resp?.webSocket?.close();
+-      }
+-      return resp;
++      const api = ctx.exports.ApiDurableObject as unknown as
++          DurableObjectNamespace<ApiDurableObject>;
++      return api.getByName("").fetch(req);
+     }
+ 
+     return new Response("Not Found", {status: 404});

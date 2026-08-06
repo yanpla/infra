@@ -18,6 +18,8 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     hash = "sha256-eiApNC4hloxVvVcM6Ke8ezzlDMeCvDMGUKSFG4jYzDo=";
   };
 
+  patches = [ ./cloudflare-os-celld.patch ];
+
   pnpmDeps = fetchPnpmDeps {
     inherit (finalAttrs) pname version src;
     pnpm = pnpm_11;
