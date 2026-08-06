@@ -1,6 +1,7 @@
 {
   den.aspects.cloudflare-os.nixos =
     {
+      config,
       lib,
       pkgs,
       pkgs-unstable,
@@ -8,6 +9,9 @@
     }:
     let
       cloudflareOs = pkgs-unstable.callPackage ../../../packages/cloudflare-os.nix { };
+      hiveWorker = pkgs.runCommand "cloudflare-os-hive-worker" { } ''
+        cp -r ${../../../packages/cloudflare-os-hive-worker} $out
+      '';
       celld = pkgs.stdenvNoCC.mkDerivation {
         pname = "celld";
         version = "0.1.0";
@@ -50,6 +54,10 @@
         export CELLD_ASSET_CACHE_DIR=/var/cache/cloudflare-os/assets
         exec ${lib.getExe celld} \
           --listen 127.0.0.1:9180
+      '';
+      deployHiveWorker = pkgs.writeShellScript "cloudflare-os-hive-deploy" ''
+        exec ${lib.getExe config.services.hive.package} \
+          deploy ${hiveWorker} --no-bundle
       '';
       credentials = [
         "access-key:/etc/cloudflare-os-s3-access-key"
@@ -105,6 +113,25 @@
           ProtectControlGroups = true;
           RestrictSUIDSGID = true;
           LockPersonality = true;
+        };
+      };
+
+      systemd.services.cloudflare-os-hive-deploy = {
+        description = "Route Cloudflare OS through hive";
+        wantedBy = [ "multi-user.target" ];
+        after = [
+          "cloudflare-os.service"
+          "hived.service"
+        ];
+        requires = [
+          "cloudflare-os.service"
+          "hived.service"
+        ];
+        restartTriggers = [ hiveWorker ];
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart = deployHiveWorker;
+          RemainAfterExit = true;
         };
       };
     };
