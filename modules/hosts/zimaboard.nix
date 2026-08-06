@@ -5,6 +5,7 @@
       den.aspects.server
       den.aspects.zimaboard-hardware
       den.aspects.t3code
+      den.aspects.rustfs
     ];
     nixos =
       { pkgs-unstable, ... }:
