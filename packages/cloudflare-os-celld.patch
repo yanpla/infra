@@ -1,3 +1,15 @@
+diff --git a/packages/workshop-backend/src/admin-config.ts b/packages/workshop-backend/src/admin-config.ts
+index 43e9563..fd3a0a4 100644
+--- a/packages/workshop-backend/src/admin-config.ts
++++ b/packages/workshop-backend/src/admin-config.ts
+@@ -291,6 +291,7 @@ export function serializeAdminConfig(config: AdminConfig): string {
+
+ // Read the admin config from the KV mirror. Cheap enough for the hot path (a single KV get).
+ export async function readAdminConfig(env: Cloudflare.Env): Promise<AdminConfig> {
++  if (!env.BLUEPRINTS) return { ...DEFAULT_ADMIN_CONFIG };
+   return parseAdminConfig(await env.BLUEPRINTS.get(ADMIN_CONFIG_KEY));
+ }
+
 diff --git a/packages/workshop-backend/src/server.ts b/packages/workshop-backend/src/server.ts
 index a5c7124..b7967a7 100644
 --- a/packages/workshop-backend/src/server.ts
@@ -19,7 +31,7 @@ index a5c7124..b7967a7 100644
 +  async fetch(req: Request): Promise<Response> {
 +    let url = new URL(req.url);
 +
-+    if (!formatBlueprintInstallStarted) {
++    if (this.env.BLUEPRINTS && this.env.BLUEPRINT_CONTENT && !formatBlueprintInstallStarted) {
 +      formatBlueprintInstallStarted = true;
 +      this.ctx.waitUntil(this.ctx.exports.AdminSettings.getByName("").ensureFormatBlueprintsInstalled()
 +          .then((complete: boolean) => {
