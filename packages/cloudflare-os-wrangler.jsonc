@@ -8,6 +8,26 @@
     "global_fetch_strictly_public",
     "nodejs_compat"
   ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "USER_DURABLE_OBJECT",
+        "class_name": "UserDurableObject"
+      },
+      {
+        "name": "OVERSEER_DURABLE_OBJECT",
+        "class_name": "OverseerDurableObject"
+      },
+      {
+        "name": "ADMIN_SETTINGS",
+        "class_name": "AdminSettings"
+      },
+      {
+        "name": "PENDING_LOGIN",
+        "class_name": "PendingLogin"
+      }
+    ]
+  },
   "migrations": [
     {
       "tag": "v0",
