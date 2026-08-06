@@ -15,7 +15,11 @@
           url = "https://github.com/denoland/celld/releases/download/v0.1.0/celld-x86_64-unknown-linux-gnu.gz";
           hash = "sha256-E5NUwoYY/mSIZFmPXN9prpGhdrMrkEGKgT4Cboa+mnw=";
         };
-        nativeBuildInputs = [ pkgs.gzip ];
+        nativeBuildInputs = [
+          pkgs.autoPatchelfHook
+          pkgs.gzip
+        ];
+        buildInputs = [ pkgs.stdenv.cc.cc.lib ];
         dontUnpack = true;
         installPhase = ''
           mkdir -p $out/bin
