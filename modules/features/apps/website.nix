@@ -10,6 +10,12 @@
         # nginx is the only public listener. The control API and asset service
         # retain hive's loopback-only defaults.
         listen = "127.0.0.1:9080";
+        s3AssetStorage = {
+          endpoint = "http://zimaboard:9000";
+          bucket = "hive-assets";
+          accessKeyFile = "/etc/hive-s3-access-key";
+          secretKeyFile = "/etc/hive-s3-secret-key";
+        };
       };
 
       services.nginx = {
