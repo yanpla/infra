@@ -11,6 +11,7 @@
       {
         environment.systemPackages = with pkgs-unstable; [
           claude-code
+          codex
           nil
           nixd
         ];
