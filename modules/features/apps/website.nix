@@ -1,28 +1,15 @@
 {
-  # Serves yanpla.nl: the Astro SSR server from the website flake input,
-  # fronted by nginx with ACME TLS.
+  # Serves yanpla.nl with hive, fronted by nginx with ACME TLS.
   den.aspects.website.nixos =
-    { inputs, pkgs, ... }:
+    { inputs, ... }:
     {
-      systemd.services.website = {
-        description = "yanpla.nl website";
-        wantedBy = [ "multi-user.target" ];
-        after = [ "network-online.target" ];
-        wants = [ "network-online.target" ];
-        environment = {
-          HOST = "127.0.0.1";
-          PORT = "4321";
-        };
-        serviceConfig = {
-          ExecStart = "${inputs.website.packages.${pkgs.system}.default}/bin/website";
-          DynamicUser = true;
-          Restart = "on-failure";
-          RestartSec = "5s";
-          # Holds GITHUB_TOKEN (lifts the API rate limit); create on the host:
-          #   install -m 600 <(echo 'GITHUB_TOKEN=github_pat_...') /etc/website.env
-          # Leading "-" lets the service start without it.
-          EnvironmentFile = "-/etc/website.env";
-        };
+      imports = [ inputs.hive.nixosModules.default ];
+
+      services.hive = {
+        enable = true;
+        # nginx is the only public listener. The control API and asset service
+        # retain hive's loopback-only defaults.
+        listen = "127.0.0.1:8080";
       };
 
       services.nginx = {
@@ -34,7 +21,7 @@
           # No www CNAME exists; add one before re-adding a www alias here.
           enableACME = true;
           forceSSL = true;
-          locations."/".proxyPass = "http://127.0.0.1:4321";
+          locations."/".proxyPass = "http://127.0.0.1:8080";
         };
       };
 
