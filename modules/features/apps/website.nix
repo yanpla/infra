@@ -1,7 +1,7 @@
 {
   # Serves yanpla.nl with hive, fronted by nginx with ACME TLS.
   den.aspects.website.nixos =
-    { inputs, ... }:
+    { inputs, lib, ... }:
     {
       imports = [ inputs.hive.nixosModules.default ];
 
@@ -9,7 +9,7 @@
         enable = true;
         # nginx is the only public listener. The control API and asset service
         # retain hive's loopback-only defaults.
-        listen = "127.0.0.1:8080";
+        listen = "127.0.0.1:9080";
       };
 
       services.nginx = {
@@ -21,7 +21,7 @@
           # No www CNAME exists; add one before re-adding a www alias here.
           enableACME = true;
           forceSSL = true;
-          locations."/".proxyPass = "http://127.0.0.1:8080";
+          locations."/".proxyPass = "http://127.0.0.1:9080";
         };
       };
 
