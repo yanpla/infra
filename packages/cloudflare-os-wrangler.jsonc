@@ -1,0 +1,35 @@
+{
+  "name": "cloudflare-os",
+  "main": ".wrangler/validate/src/server.ts",
+  "compatibility_date": "2026-02-02",
+  "compatibility_flags": [
+    "allow_irrevocable_stub_storage",
+    "enhanced_error_serialization",
+    "global_fetch_strictly_public",
+    "nodejs_compat"
+  ],
+  "migrations": [
+    {
+      "tag": "v0",
+      "new_sqlite_classes": ["UserDurableObject", "OverseerDurableObject"]
+    },
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["AdminSettings"]
+    },
+    {
+      "tag": "v2",
+      "new_sqlite_classes": ["PendingLogin"]
+    }
+  ],
+  "assets": {
+    "directory": "../workshop-frontend/dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api", "/api/*", "/blueprint-screenshot/*"]
+  },
+  "vars": {
+    "PUBLIC_BASE_URL": "https://agents.yanpla.nl",
+    "ADMINS": ["admin"]
+  }
+}

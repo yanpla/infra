@@ -8,6 +8,7 @@ in
       den.aspects.server
       den.aspects.beta-hardware
       den.aspects.website
+      den.aspects.cloudflare-os
       den.aspects.starlight-web
       den.aspects.calagopus-panel
       den.aspects.calagopus-wings

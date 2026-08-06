@@ -16,6 +16,10 @@
           accessKeyFile = "/etc/hive-s3-access-key";
           secretKeyFile = "/etc/hive-s3-secret-key";
         };
+        localServices.cloudflare-os = {
+          address = "127.0.0.1:9180";
+          allowedWorkers = [ "cloudflare-os" ];
+        };
       };
 
       services.nginx = {
@@ -25,6 +29,11 @@
         recommendedGzipSettings = true;
         virtualHosts."yanpla.nl" = {
           # No www CNAME exists; add one before re-adding a www alias here.
+          enableACME = true;
+          forceSSL = true;
+          locations."/".proxyPass = "http://127.0.0.1:9080";
+        };
+        virtualHosts."agents.yanpla.nl" = {
           enableACME = true;
           forceSSL = true;
           locations."/".proxyPass = "http://127.0.0.1:9080";
