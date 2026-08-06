@@ -44,6 +44,8 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     runHook preInstall
     mkdir -p $out/share
     cp -r . $out/share/cloudflare-os
+    cp -r packages/workshop-frontend/dist \
+      $out/share/cloudflare-os/packages/workshop-backend/cloudflare-os-assets
     cp ${./cloudflare-os-wrangler.jsonc} \
       $out/share/cloudflare-os/packages/workshop-backend/wrangler.jsonc
     runHook postInstall
