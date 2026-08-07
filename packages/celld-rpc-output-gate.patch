@@ -1,0 +1,164 @@
+diff --git a/crates/celld/js.rs b/crates/celld/js.rs
+index 6ad7908..1d23836 100644
+--- a/crates/celld/js.rs
++++ b/crates/celld/js.rs
+@@ -481,7 +481,7 @@ pub enum CellJob {
+         name: Option<String>,
+         method: String,
+         args: RpcData,
+-        reply: tokio::sync::oneshot::Sender<Result<RpcData>>,
++        reply: tokio::sync::oneshot::Sender<Result<(RpcData, Option<u64>)>>,
+     },
+     WsOpen {
+         scope: String,
+@@ -1650,7 +1650,7 @@ fn call_dispatch_rpc(
+     method: &str,
+     args: RpcData,
+     rx: &std::sync::mpsc::Receiver<CellJob>,
+-) -> Result<RpcData> {
++) -> Result<(RpcData, Option<u64>)> {
+     let context = tc.get_current_context();
+     let global = context.global(tc);
+     let key = v8::String::new(tc, "__dispatchRpc").unwrap();
+@@ -1664,6 +1664,7 @@ fn call_dispatch_rpc(
+     let method = v8::String::new(tc, method).unwrap();
+     let args = rpc_data_value(tc, args);
+     let recv = v8::undefined(tc).into();
++    let writes_before = storage::write_position(scope);
+     begin_event_context(tc)?;
+     let Some(ret) = f.call(tc, recv, &[sc.into(), method.into(), args]) else {
+         let _ = end_event_context(tc);
+@@ -1675,7 +1676,11 @@ fn call_dispatch_rpc(
+         return Err(anyhow!(error));
+     }
+     let ret = ret?;
+-    Ok(rpc_data_ret(tc, ret))
++    let write_position = match (writes_before, storage::write_position(scope)) {
++        (Some(before), Some(after)) if after > before => Some(after),
++        _ => None,
++    };
++    Ok((rpc_data_ret(tc, ret), write_position))
+ }
+ 
+ fn call_dispatch_ws(
+@@ -2457,7 +2462,7 @@ impl Worker {
+         method: &str,
+         args: RpcData,
+         rx: &std::sync::mpsc::Receiver<CellJob>,
+-    ) -> Result<RpcData> {
++    ) -> Result<(RpcData, Option<u64>)> {
+         let context_g = self.context.clone();
+         v8::scope!(let hs, &mut self.isolate);
+         let context = v8::Local::new(hs, context_g);
+@@ -2475,6 +2480,7 @@ impl Worker {
+         let method = v8::String::new(tc, method).unwrap();
+         let args = rpc_data_value(tc, args);
+         let recv = v8::undefined(tc).into();
++        let writes_before = storage::write_position(scope);
+         begin_event_context(tc)?;
+         let Some(ret) = f.call(tc, recv, &[sc.into(), method.into(), args]) else {
+             let _ = end_event_context(tc);
+@@ -2485,7 +2491,11 @@ impl Worker {
+             return Err(anyhow!(error));
+         }
+         let ret = ret?;
+-        Ok(rpc_data_ret(tc, ret))
++        let write_position = match (writes_before, storage::write_position(scope)) {
++            (Some(before), Some(after)) if after > before => Some(after),
++            _ => None,
++        };
++        Ok((rpc_data_ret(tc, ret), write_position))
+     }
+ 
+     /// JSON-flavored `dispatch_rpc_data`, the test harness's entry point.
+@@ -2498,7 +2508,7 @@ impl Worker {
+         rx: &std::sync::mpsc::Receiver<CellJob>,
+     ) -> Result<String> {
+         let args = RpcData::Json(args.into());
+-        match self.dispatch_rpc_data(scope, method, args, rx)? {
++        match self.dispatch_rpc_data(scope, method, args, rx)?.0 {
+             RpcData::Json(json) => Ok(json),
+             RpcData::V8(_) => Err(anyhow!("JSON RPC answered bytes")),
+         }
+diff --git a/crates/celld/main.rs b/crates/celld/main.rs
+index 4f3b667..6e90dfb 100644
+--- a/crates/celld/main.rs
++++ b/crates/celld/main.rs
+@@ -519,6 +519,34 @@ struct AppHandle {
+ }
+ 
+ impl AppHandle {
++    /// Run one native Durable Object RPC call on its local owner. RPC writes
++    /// use the same durability output gate as fetch writes before the result is
++    /// visible to the caller.
++    async fn local_rpc(
++        &self,
++        request: u64,
++        scope: String,
++        name: Option<String>,
++        method: String,
++        args: celld::js::RpcData,
++    ) -> anyhow::Result<celld::js::RpcData> {
++        let _activity = self.activity(request, scope.clone());
++        let (result, write_position) = self
++            .runtime
++            .as_ref()
++            .context("no cell runtime")?
++            .rpc(scope, name, method, args)
++            .await?;
++        if self.output_gate {
++            if let Some(position) = write_position {
++                self.gate_write(request, position)
++                    .await
++                    .map_err(|error| anyhow::anyhow!("RPC output gate failed: {error:?}"))?;
++            }
++        }
++        Ok(result)
++    }
++
+     async fn request(&self, cell: String) -> Result<Routed, RequestError> {
+         self.request_with_mode(cell, false).await
+     }
+@@ -2460,13 +2488,7 @@ async fn dispatch_rpc_call(app: AppHandle, call: RpcCallReq) {
+                 .map_err(|error| anyhow::anyhow!("route RPC {scope}: {error:?}"))?;
+             let (node, addr, epoch, peer_protocol) = match route {
+                 Route::Local => {
+-                    let _activity = app.activity(request, scope.clone());
+-                    return app
+-                        .runtime
+-                        .as_ref()
+-                        .context("no cell runtime")?
+-                        .rpc(scope, name, method, args)
+-                        .await;
++                    return app.local_rpc(request, scope, name, method, args).await;
+                 }
+                 Route::Remote {
+                     node,
+@@ -2938,13 +2960,7 @@ async fn internal_rpc(request: Request<Incoming>, app: AppHandle, scope: String)
+         Ok(Routed {
+             request,
+             route: Route::Local,
+-        }) => {
+-            let _activity = app.activity(request, scope.clone());
+-            let Some(runtime) = &app.runtime else {
+-                return peer_response(response(StatusCode::SERVICE_UNAVAILABLE, "no cell runtime"));
+-            };
+-            runtime.rpc(scope, name, rpc_method, args).await
+-        }
++        }) => app.local_rpc(request, scope, name, rpc_method, args).await,
+         Ok(Routed {
+             route: Route::Remote { .. },
+             ..
+diff --git a/crates/celld/runtime.rs b/crates/celld/runtime.rs
+index 7f135ea..a4d399c 100644
+--- a/crates/celld/runtime.rs
++++ b/crates/celld/runtime.rs
+@@ -857,7 +857,7 @@ impl RuntimeManager {
+         name: Option<String>,
+         method: String,
+         args: js::RpcData,
+-    ) -> anyhow::Result<js::RpcData> {
++    ) -> anyhow::Result<(js::RpcData, Option<u64>)> {
+         let tx = self.cell_sender(&cell)?;
+         let (reply, receive) = tokio::sync::oneshot::channel();
+         tx.send(CellJob::Rpc {

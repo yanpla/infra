@@ -12,26 +12,7 @@
       hiveWorker = pkgs.runCommand "cloudflare-os-hive-worker" { } ''
         cp -r ${../../../packages/cloudflare-os-hive-worker} $out
       '';
-      celld = pkgs.stdenvNoCC.mkDerivation {
-        pname = "celld";
-        version = "0.1.0";
-        src = pkgs.fetchurl {
-          url = "https://github.com/denoland/celld/releases/download/v0.1.0/celld-x86_64-unknown-linux-gnu.gz";
-          hash = "sha256-E5NUwoYY/mSIZFmPXN9prpGhdrMrkEGKgT4Cboa+mnw=";
-        };
-        nativeBuildInputs = [
-          pkgs.autoPatchelfHook
-          pkgs.gzip
-        ];
-        buildInputs = [ pkgs.stdenv.cc.cc.lib ];
-        dontUnpack = true;
-        installPhase = ''
-          mkdir -p $out/bin
-          gzip -dc $src > $out/bin/celld
-          chmod 0555 $out/bin/celld
-        '';
-        meta.mainProgram = "celld";
-      };
+      celld = pkgs.callPackage ../../../packages/celld.nix { };
       withCredentials =
         name: command:
         pkgs.writeShellScript name ''
