@@ -39,6 +39,10 @@
           locations."/" = {
             proxyPass = "http://127.0.0.1:9080";
             proxyWebsockets = true;
+            extraConfig = ''
+              proxy_read_timeout 1h;
+              proxy_send_timeout 1h;
+            '';
           };
         };
       };
