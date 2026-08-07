@@ -23,6 +23,28 @@ index a5c7124..b7967a7 100644
  import { recordAnalytics } from "./analytics";
  import { handleClientErrorRequest } from "./client-errors.js";
  import { verifyCfAccessJwt } from "./access.js";
+@@ -171,19 +171,10 @@ class AuthenticatedApiImpl extends RpcTarget implements AuthenticatedApi {
+         throw new Error("Avatar must be a JPEG or PNG image");
+       }
+     }
+-    // Avatar data lives in KV (global), not the user's DO storage, so we
+-    // read/write it directly here to avoid routing through the DO location.
+-    let userId = this.user.id.name!;
+-    if (data) {
+-      await this.env.AVATARS.put(userId, data);
+-    } else {
+-      await this.env.AVATARS.delete(userId);
+-    }
++    await this.user.setAvatar(data);
+   }
+   async getAvatar(userId: string): Promise<Uint8Array | null> {
+-    let result = await this.env.AVATARS.get(userId, "arrayBuffer");
+-    if (!result) return null;
+-    return new Uint8Array(result);
++    return this.users.getByName(userId).getAvatar();
+   }
+
+   getAiConfig(): Promise<AiGatewayInfo> {
 @@ -778,6 +778,57 @@ class PublicApiImpl extends RpcTarget implements PublicApi {
    }
  }
@@ -148,3 +170,29 @@ index a5c7124..b7967a7 100644
      }
  
      return new Response("Not Found", {status: 404});
+diff --git a/packages/workshop-backend/src/user.ts b/packages/workshop-backend/src/user.ts
+index 727d089..0b506a0 100644
+--- a/packages/workshop-backend/src/user.ts
++++ b/packages/workshop-backend/src/user.ts
+@@ -194,6 +194,7 @@ function makeUserStorage(storage: DurableObjectStorage) {
+       quickModel: <string | null>null,
+       preferredModel: <string | null>null,
+       onboardingCompleted: false,
++      avatar: <Uint8Array | null>null,
+
+       // Set once the user's pre-existing workspaces have been asked to populate the outputs index
+       // (see #backfillOutputs()). Workspaces created since push on their own.
+@@ -502,6 +503,14 @@ export class UserDurableObject extends DurableObject<Cloudflare.Env> {
+     this.storage.profile.put(profile);
+   }
+
++  setAvatar(data: Uint8Array | null): void {
++    this.storage.avatar.put(data);
++  }
++
++  getAvatar(): Uint8Array | null {
++    return this.storage.avatar.get();
++  }
++
+   async listModels(): Promise<AiChatAuthorInfo[]> {
+     let result: AiChatAuthorInfo[] = [];
