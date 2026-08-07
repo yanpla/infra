@@ -162,15 +162,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1786057022,
-        "narHash": "sha256-YqzncgCTEpyRhSVqi8b6yVuf9vYiVfkdd/VyTUQD1a4=",
-        "ref": "refs/heads/main",
-        "rev": "4f1a97f2c4022ac59e0c6280f484e668a5683301",
-        "revCount": 13,
+        "lastModified": 1786090015,
+        "narHash": "sha256-NYyAwhVIGmvGsnfv8cFUF0N3x9Q4HG2y/k344OU+7sk=",
+        "ref": "codex/multi-project-cells",
+        "rev": "e5bbfa285b66e50d8c34e49a607101ffbb3a5092",
+        "revCount": 17,
         "type": "git",
         "url": "ssh://git@github.com/yanpla/hive"
       },
       "original": {
+        "ref": "codex/multi-project-cells",
         "type": "git",
         "url": "ssh://git@github.com/yanpla/hive"
       }

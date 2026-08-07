@@ -11,7 +11,7 @@
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
-    hive.url = "git+ssh://git@github.com/yanpla/hive";
+    hive.url = "git+ssh://git@github.com/yanpla/hive?ref=codex/multi-project-cells";
     hive.inputs.nixpkgs.follows = "nixpkgs";
 
     starlight-web.url = "git+ssh://git@github.com/All-Of-Us-Mods/Starlight-Web";

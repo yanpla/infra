@@ -16,9 +16,14 @@
           accessKeyFile = "/etc/hive-s3-access-key";
           secretKeyFile = "/etc/hive-s3-secret-key";
         };
-        localServices.cloudflare-os = {
-          address = "127.0.0.1:9180";
-          allowedWorkers = [ "cloudflare-os" ];
+        cells = {
+          listen = "127.0.0.1:9180";
+          endpoint = "http://zimaboard:9000";
+          bucket = "hive-cloudflare-os";
+          accessKeyFile = "/etc/cloudflare-os-s3-access-key";
+          secretKeyFile = "/etc/cloudflare-os-s3-secret-key";
+          ingressTokenFile = "/etc/cloudflare-os-cells-ingress-token";
+          workerLoaderBinding = "LOADER";
         };
       };
 

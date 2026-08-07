@@ -7,16 +7,14 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "celld";
-  version = "0.1.0-hive.1";
+  version = "0.1.0-hive.2";
 
   src = fetchFromGitHub {
-    owner = "denoland";
+    owner = "yanpla";
     repo = "celld";
-    rev = "553ae73";
-    hash = "sha256-Iew3/ugHftS1Ui6tiVRPj3FguYmGx9vwMfS6pY00CWQ=";
+    rev = "b26fb52ac0ccb8379f1a2a9fde2db876cb2c6c03";
+    hash = "sha256-5z/5c6M9ctPYONvJqCBeazdPrRnkBCjn+tp0aFtKjME=";
   };
-
-  patches = [ ./celld-rpc-output-gate.patch ];
 
   cargoHash = "sha256-g3b2gFeHkqlUVLydWs/HiieK2dtw7BC2o9eNwCGAHT0=";
 
