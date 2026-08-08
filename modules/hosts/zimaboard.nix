@@ -13,6 +13,7 @@
           claude-code
           codex
           opencode
+          pi-coding-agent
           nil
           nixd
         ];
