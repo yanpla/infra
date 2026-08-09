@@ -1,7 +1,7 @@
 {
   # Serves yanpla.nl with hive, fronted by nginx with ACME TLS.
   den.aspects.website.nixos =
-    { inputs, lib, ... }:
+    { inputs, ... }:
     {
       imports = [ inputs.hive.nixosModules.default ];
 
@@ -10,6 +10,16 @@
         # nginx is the only public listener. The control API and asset service
         # retain hive's loopback-only defaults.
         listen = "127.0.0.1:9080";
+
+        # The whole control plane -- routes, deployments, assets, secrets --
+        # lives in rustfs on zimaboard, reached over the tailnet. Keys are
+        # provisioned by hand and stay out of the repo.
+        storage = {
+          endpoint = "http://zimaboard:9000";
+          bucket = "hive";
+          accessKeyFile = "/etc/hive/s3-access-key";
+          secretKeyFile = "/etc/hive/s3-secret-key";
+        };
       };
 
       services.nginx = {
