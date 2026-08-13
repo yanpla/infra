@@ -14,6 +14,9 @@
     hive.url = "git+ssh://git@github.com/yanpla/hive";
     hive.inputs.nixpkgs.follows = "nixpkgs";
 
+    website.url = "git+ssh://git@github.com/yanpla/website";
+    website.inputs.nixpkgs.follows = "nixpkgs";
+
     starlight-web.url = "git+ssh://git@github.com/All-Of-Us-Mods/Starlight-Web";
     starlight-web.inputs.nixpkgs.follows = "nixpkgs";
 

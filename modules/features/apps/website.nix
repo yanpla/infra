@@ -1,5 +1,5 @@
 {
-  # Serves yanpla.nl with hive, fronted by nginx with ACME TLS.
+  # Serves yanpla.nl from an isolated celld fleet, fronted by nginx with ACME TLS.
   den.aspects.website.nixos =
     { inputs, ... }:
     {
@@ -7,16 +7,15 @@
 
       services.hive = {
         enable = true;
-        # nginx is the only public listener. The control API and asset service
-        # retain hive's loopback-only defaults.
-        listen = "127.0.0.1:9080";
-
-        # The whole control plane -- routes, deployments, assets, secrets --
-        # lives in rustfs on zimaboard, reached over the tailnet. Keys are
-        # provisioned by hand and stay out of the repo.
-        storage = {
+        applications.website = {
+          project = inputs.website.packages.x86_64-linux.default;
+          # This prefix is the website fleet's complete administrative and
+          # durability boundary inside rustfs's hive bucket.
+          bucket = "s3://hive/website";
           endpoint = "http://zimaboard:9000";
-          bucket = "hive";
+          region = "auto";
+          publicListen = "127.0.0.1:9080";
+          internalListen = "127.0.0.1:9081";
           accessKeyFile = "/etc/hive/s3-access-key";
           secretKeyFile = "/etc/hive/s3-secret-key";
         };

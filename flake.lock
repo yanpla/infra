@@ -155,6 +155,24 @@
         "type": "github"
       }
     },
+    "flake-utils_3": {
+      "inputs": {
+        "systems": "systems_3"
+      },
+      "locked": {
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
     "hive": {
       "inputs": {
         "nixpkgs": [
@@ -162,11 +180,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1786208822,
-        "narHash": "sha256-w6hbdzdQjj2ZmdBJrwCaArf5HK2O74UtWbL2MOtUkx0=",
+        "lastModified": 1786611369,
+        "narHash": "sha256-w/TEwdgVBo3y9Lo1iL5Ky3L7xjxTOKFQc0lFuyVYW0g=",
         "ref": "refs/heads/main",
-        "rev": "c456adf311da2db3cc683188ddb94c42f3e3430b",
-        "revCount": 44,
+        "rev": "203e08a9f4db0bb78699b7b87b690607ca5ff2ec",
+        "revCount": 61,
         "type": "git",
         "url": "ssh://git@github.com/yanpla/hive"
       },
@@ -248,6 +266,24 @@
         "type": "github"
       }
     },
+    "nix-vite-plus": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_2"
+      },
+      "locked": {
+        "lastModified": 1784962077,
+        "narHash": "sha256-Gw/fnv0QoTnNkcSKfzJZ1tZoQAJUJcKHtE7zJCBe1Jk=",
+        "owner": "ryoppippi",
+        "repo": "nix-vite-plus",
+        "rev": "007724d2f262cad34d2d41e8bb81f260b2e07981",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ryoppippi",
+        "repo": "nix-vite-plus",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1785858998,
@@ -280,6 +316,22 @@
         "type": "github"
       }
     },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1781577229,
+        "narHash": "sha256-lrp67w8AulE9Ks53n27I45ADSzbOCn4H+CNW1Ck8B+8=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "567a49d1913ce81ac6e9582e3553dd90a955875f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "calagopus-nix": "calagopus-nix",
@@ -291,7 +343,8 @@
         "infra-private": "infra-private",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
-        "starlight-web": "starlight-web"
+        "starlight-web": "starlight-web",
+        "website": "website"
       }
     },
     "rust-analyzer-src": {
@@ -392,6 +445,43 @@
         "owner": "nix-systems",
         "repo": "default",
         "type": "github"
+      }
+    },
+    "systems_3": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "website": {
+      "inputs": {
+        "flake-utils": "flake-utils_3",
+        "nix-vite-plus": "nix-vite-plus",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1786611135,
+        "narHash": "sha256-iPCXb6Ofqc8EdjrSAK6C9It9yp9wZcWUylTmFKC//bA=",
+        "ref": "refs/heads/main",
+        "rev": "a8d443411eff7ed529dff41ce064b8549677f2c4",
+        "revCount": 68,
+        "type": "git",
+        "url": "ssh://git@github.com/yanpla/website"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/yanpla/website"
       }
     }
   },
