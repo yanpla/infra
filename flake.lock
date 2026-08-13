@@ -180,11 +180,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1786611369,
-        "narHash": "sha256-w/TEwdgVBo3y9Lo1iL5Ky3L7xjxTOKFQc0lFuyVYW0g=",
+        "lastModified": 1786611937,
+        "narHash": "sha256-9t2H/R32hb/6iL+/7q7k28J8vdDN9Myhf4cqtR4LucQ=",
         "ref": "refs/heads/main",
-        "rev": "203e08a9f4db0bb78699b7b87b690607ca5ff2ec",
-        "revCount": 61,
+        "rev": "161404fde190d762fd49bea3be953aefc88f932b",
+        "revCount": 62,
         "type": "git",
         "url": "ssh://git@github.com/yanpla/hive"
       },

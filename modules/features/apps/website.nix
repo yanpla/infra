@@ -18,6 +18,7 @@
           internalListen = "127.0.0.1:9081";
           accessKeyFile = "/etc/hive/s3-access-key";
           secretKeyFile = "/etc/hive/s3-secret-key";
+          environmentFile = "/etc/website.env";
         };
       };
 
