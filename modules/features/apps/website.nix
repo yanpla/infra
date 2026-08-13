@@ -20,39 +20,6 @@
           secretKeyFile = "/etc/hive/s3-secret-key";
           environmentFile = "/etc/website.env";
         };
-        applications.bench1 = {
-          project = inputs.website.packages.x86_64-linux.default;
-          bucket = "s3://hive/bench1";
-          endpoint = "http://zimaboard:9000";
-          region = "auto";
-          publicListen = "127.0.0.1:9090";
-          internalListen = "127.0.0.1:9091";
-          accessKeyFile = "/etc/hive/s3-access-key";
-          secretKeyFile = "/etc/hive/s3-secret-key";
-          environmentFile = "/etc/website.env";
-        };
-        applications.bench2 = {
-          project = inputs.website.packages.x86_64-linux.default;
-          bucket = "s3://hive/bench2";
-          endpoint = "http://zimaboard:9000";
-          region = "auto";
-          publicListen = "127.0.0.1:9100";
-          internalListen = "127.0.0.1:9101";
-          accessKeyFile = "/etc/hive/s3-access-key";
-          secretKeyFile = "/etc/hive/s3-secret-key";
-          environmentFile = "/etc/website.env";
-        };
-        applications.bench3 = {
-          project = inputs.website.packages.x86_64-linux.default;
-          bucket = "s3://hive/bench3";
-          endpoint = "http://zimaboard:9000";
-          region = "auto";
-          publicListen = "127.0.0.1:9110";
-          internalListen = "127.0.0.1:9111";
-          accessKeyFile = "/etc/hive/s3-access-key";
-          secretKeyFile = "/etc/hive/s3-secret-key";
-          environmentFile = "/etc/website.env";
-        };
       };
 
       services.nginx = {
@@ -65,21 +32,6 @@
           enableACME = true;
           forceSSL = true;
           locations."/".proxyPass = "http://127.0.0.1:9080";
-        };
-        virtualHosts."bench1.yanpla.nl" = {
-          enableACME = true;
-          forceSSL = true;
-          locations."/".proxyPass = "http://127.0.0.1:9090";
-        };
-        virtualHosts."bench2.yanpla.nl" = {
-          enableACME = true;
-          forceSSL = true;
-          locations."/".proxyPass = "http://127.0.0.1:9100";
-        };
-        virtualHosts."bench3.yanpla.nl" = {
-          enableACME = true;
-          forceSSL = true;
-          locations."/".proxyPass = "http://127.0.0.1:9110";
         };
       };
 
