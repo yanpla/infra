@@ -20,6 +20,16 @@
           secretKeyFile = "/etc/hive/s3-secret-key";
           environmentFile = "/etc/website.env";
         };
+        applications.site = {
+          project = inputs.site.packages.x86_64-linux.default;
+          bucket = "s3://hive/site";
+          endpoint = "http://zimaboard:9000";
+          region = "auto";
+          publicListen = "127.0.0.1:9090";
+          internalListen = "127.0.0.1:9091";
+          accessKeyFile = "/etc/hive/s3-access-key";
+          secretKeyFile = "/etc/hive/s3-secret-key";
+        };
       };
 
       services.nginx = {
@@ -32,6 +42,12 @@
           enableACME = true;
           forceSSL = true;
           locations."/".proxyPass = "http://127.0.0.1:9080";
+        };
+        virtualHosts."site.yanpla.nl" = {
+          enableACME = true;
+          forceSSL = true;
+          extraConfig = "client_max_body_size 10m;";
+          locations."/".proxyPass = "http://127.0.0.1:9090";
         };
       };
 
