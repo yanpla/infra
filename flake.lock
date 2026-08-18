@@ -450,11 +450,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1786611135,
-        "narHash": "sha256-iPCXb6Ofqc8EdjrSAK6C9It9yp9wZcWUylTmFKC//bA=",
+        "lastModified": 1784983689,
+        "narHash": "sha256-qDyKXcO199P53VOUu4ke7tdWF8zNzgIRhW3/OK47Agw=",
         "ref": "refs/heads/main",
-        "rev": "a8d443411eff7ed529dff41ce064b8549677f2c4",
-        "revCount": 68,
+        "rev": "e3ae19cddf754306a72517b2d08a8b614e5faeb4",
+        "revCount": 64,
         "type": "git",
         "url": "ssh://git@github.com/yanpla/website"
       },
