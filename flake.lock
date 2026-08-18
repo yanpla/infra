@@ -9,11 +9,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1785782449,
-        "narHash": "sha256-5aAMkTcZrx32Ym1Z3QmckgkBYVhxmfX90Jr4kgzcJ/s=",
+        "lastModified": 1787076697,
+        "narHash": "sha256-yiCWgBDX0HkddnRasEHx0ymGIEzhUbmXagd8aI3St2c=",
         "owner": "Saturn745",
         "repo": "calagopus-nix",
-        "rev": "c19e6e1f80cc45f49cc0b1c812691c28d1ad9705",
+        "rev": "a52768e2c3f1e8ecd890fa03582fc17e1b9981f7",
         "type": "github"
       },
       "original": {
@@ -33,11 +33,11 @@
         "stable": "stable"
       },
       "locked": {
-        "lastModified": 1785930890,
-        "narHash": "sha256-QN4Oy1B4Vma9DiMyXiyssrpgMuIPgkNyO8jb6k2H4oY=",
+        "lastModified": 1786742289,
+        "narHash": "sha256-r61K9svFDQkI5jONYksneDtDT5c4SkWrZVD3ni5O6Ak=",
         "owner": "zhaofengli",
         "repo": "colmena",
-        "rev": "a156fd9146e69a577fe6f5542a7c6ed83a6888ce",
+        "rev": "dc22786a43315b212eeafe13409a7203328e5a30",
         "type": "github"
       },
       "original": {
@@ -48,11 +48,11 @@
     },
     "den": {
       "locked": {
-        "lastModified": 1785531595,
-        "narHash": "sha256-ipFk5ANEHhemDusdTZeuxVyFysyALjj8rRgpcTsjD4Y=",
+        "lastModified": 1786475005,
+        "narHash": "sha256-gp7Q7rMEjsqAyW4Uwz+sms8j+XegD5P/lzRCuMW2fNI=",
         "owner": "denful",
         "repo": "den",
-        "rev": "2040b61346a7215fd7b7f51d4a457544b6e597d0",
+        "rev": "e8e8de1e32646456cfc613f152175a7a548508ec",
         "type": "github"
       },
       "original": {
@@ -266,11 +266,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1785858998,
-        "narHash": "sha256-fKCq5jphd6l/Ms6gc3dptkw/TcKLYub9lQE5g6rbbkc=",
+        "lastModified": 1787042014,
+        "narHash": "sha256-lgnV/xeEatfEnPZG0RrXS0fhcr63p3tsVvL1GdaVkJQ=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "04607e1165ac22c5fde6dcc54c9e0b3c0487c555",
+        "rev": "c69ae8fb8faeb3472fd11234ba55a70ac3601f9b",
         "type": "github"
       },
       "original": {
@@ -282,11 +282,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1785828668,
-        "narHash": "sha256-8fsyqeO+mJqvIzeO4xIpgJe/f7MTbbVTEC6RT6WSXNs=",
+        "lastModified": 1787001381,
+        "narHash": "sha256-Ue1Yo8gfHdD4TMtNewhA4tkSYeFqXThju0nCyJc3ALo=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "e72e4f299401a3689d4b3d5fc6496b11db7064eb",
+        "rev": "ec2d622de0773551768cf98f3fc50cbcc003b9c5",
         "type": "github"
       },
       "original": {
@@ -450,11 +450,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1784983689,
-        "narHash": "sha256-qDyKXcO199P53VOUu4ke7tdWF8zNzgIRhW3/OK47Agw=",
+        "lastModified": 1786611135,
+        "narHash": "sha256-iPCXb6Ofqc8EdjrSAK6C9It9yp9wZcWUylTmFKC//bA=",
         "ref": "refs/heads/main",
-        "rev": "e3ae19cddf754306a72517b2d08a8b614e5faeb4",
-        "revCount": 64,
+        "rev": "a8d443411eff7ed529dff41ce064b8549677f2c4",
+        "revCount": 68,
         "type": "git",
         "url": "ssh://git@github.com/yanpla/website"
       },
