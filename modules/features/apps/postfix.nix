@@ -27,6 +27,11 @@
       settings.main = {
         inet_protocols = "ipv4"; # no IPv6 on this host; avoids delivery stalls
 
+        # The panel submits mail without a Message-ID, and Gmail rejects that
+        # outright (550 5.7.1 RFC 5322). Let cleanup fill in Message-ID/Date/From
+        # when they're missing instead of relaying non-compliant mail.
+        always_add_missing_headers = "yes";
+
         # Opportunistic TLS outbound.
         smtp_tls_security_level = "may";
         smtp_tls_note_starttls_offer = "yes";
@@ -36,6 +41,14 @@
         smtpd_milters = "local:/run/opendkim/opendkim.sock";
         non_smtpd_milters = "local:/run/opendkim/opendkim.sock";
         milter_default_action = "tempfail";
+
+        # Bounces/DSNs are generated internally and skip the milters by default,
+        # so they went out unsigned and cloudflare's inbound routing refused them
+        # (550 5.7.26). A null-sender bounce can't pass SPF either (that check
+        # falls back to the HELO name, which has no SPF record), so DKIM is the
+        # only thing that can authenticate it. Safe to filter here because
+        # opendkim only signs — it never rejects, so there's no bounce loop.
+        internal_mail_filter_classes = "bounce,notify";
       };
     };
 
