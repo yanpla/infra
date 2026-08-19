@@ -9,6 +9,7 @@ in
       den.aspects.tunneler-hardware
       den.aspects.postfix
       den.aspects.calagopus-wings
+      den.aspects.amongea
     ];
     nixos = {
       networking.useDHCP = false;
