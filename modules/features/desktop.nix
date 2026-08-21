@@ -35,6 +35,7 @@
 
       environment.systemPackages = [
         pkgs.kdePackages.krfb
+        pkgs.zed-editor
       ];
 
       # krfb virtual monitor: exposes an extra 2560x1440 display
