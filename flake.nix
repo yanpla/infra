@@ -24,6 +24,9 @@
 
     calagopus-nix.url = "github:Saturn745/calagopus-nix";
     calagopus-nix.inputs.nixpkgs.follows = "nixpkgs";
+
+    helium.url = "github:AlvaroParker/helium-nix";
+    helium.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =

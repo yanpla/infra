@@ -1,4 +1,4 @@
-{ den, ... }:
+{ den, pkgs, inputs, system, ... }:
 {
   den.aspects.alpha = {
     includes = [
@@ -8,11 +8,10 @@
       den.aspects.calagopus-wings
       den.aspects.desktop
     ];
+
     nixos =
       { pkgs, ... }:
       let
-        # Workaround, not a fix: at stock boost this box hard-resets under mixed
-        # compile loads — no panic, no MCE, nothing logged, just an instant reset.
         maxKHz = 4800000;
 
         capBoost = pkgs.writeShellScript "cap-cpu-boost" ''
@@ -28,6 +27,11 @@
       in
       {
         system.stateVersion = "25.11";
+
+        environment.systemPackages = [
+          pkgs.zed-editor
+          inputs.helium.packages.${pkgs.stdenv.hostPlatform.system}.default
+        ];
 
         systemd.services.cap-cpu-boost = {
           description = "Cap CPU boost clock (workaround for hard resets at stock boost)";
