@@ -11,6 +11,7 @@
       {
         environment.systemPackages = with pkgs-unstable; [
           claude-code
+          pi-coding-agent
           nil
           nixd
         ];
@@ -21,11 +22,6 @@
         };
 
         programs.nix-ld.enable = true;
-
-        fileSystems."/home/yanpla/Repos" = {
-          device = "/mnt/data/repos";
-          options = [ "bind" ];
-        };
 
         system.stateVersion = "25.11";
       };
