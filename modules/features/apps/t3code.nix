@@ -26,6 +26,7 @@
         path = with pkgs-unstable; [
           nodejs
           claude-code
+          opencode # t3code's opencode provider shells out to `opencode`
           bash # node-pty compiles via node-gyp on first `npx` fetch
           gnumake
           gcc
