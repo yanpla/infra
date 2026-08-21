@@ -6,6 +6,7 @@
       den.aspects.alpha-hardware
       den.aspects.zram-swap
       den.aspects.calagopus-wings
+      den.aspects.desktop
     ];
     nixos =
       { pkgs, ... }:
