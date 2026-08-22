@@ -35,6 +35,20 @@
       {
         system.stateVersion = "25.11";
 
+        # Run prebuilt/FHS binaries (e.g. Delta)
+        programs.nix-ld = {
+          enable = true;
+          libraries = with pkgs; [
+            glibc
+            libGL
+            vulkan-loader
+            wayland
+            libxkbcommon # delta bundles its own copy which expects /usr/share/X11/xkb
+            xorg.libX11
+            xorg.libxcb
+          ];
+        };
+
         environment.systemPackages = with pkgs-unstable; [
           zed-editor
           nil
