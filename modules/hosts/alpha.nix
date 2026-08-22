@@ -13,6 +13,7 @@
       den.aspects.zram-swap
       den.aspects.calagopus-wings
       den.aspects.desktop
+      den.aspects.t3code
     ];
 
     nixos =

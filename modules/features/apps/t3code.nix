@@ -1,8 +1,16 @@
 {
-  # Headless t3code (github.com/pingdotgg/t3code) for remote agent access over the tailnet.
+  # Headless t3code for remote agent access over the tailnet.
   # Runs as `yanpla` (admin.nix) so the in-app terminal shares his home dir.
   den.aspects.t3code.nixos =
-    { pkgs-unstable, ... }:
+    {
+      inputs,
+      pkgs,
+      pkgs-unstable,
+      ...
+    }:
+    let
+      t3code-server = inputs.t3-code-nix.packages.${pkgs.stdenv.hostPlatform.system}.t3code-server;
+    in
     {
       # t3code drives `tailscale serve` itself and fetches its own tailnet cert,
       # both of which are root-gated unless `yanpla` is the operator.
@@ -22,15 +30,9 @@
         requires = [ "tailscaled.service" ];
         environment = {
           T3CODE_HOME = "/var/lib/t3code";
+          T3CODE_DISABLE_AUTO_UPDATE = "1";
         };
         path = with pkgs-unstable; [
-          nodejs
-          claude-code
-          opencode # t3code's opencode provider shells out to `opencode`
-          bash # node-pty compiles via node-gyp on first `npx` fetch
-          gnumake
-          gcc
-          python3
           git
           gh
           tailscale # t3code shells out to `tailscale serve`
@@ -40,7 +42,7 @@
           Group = "users";
           StateDirectory = "t3code";
           WorkingDirectory = "/home/yanpla";
-          ExecStart = "${pkgs-unstable.nodejs}/bin/npx -y t3@0.0.31 serve --host 0.0.0.0 --port 3773 --tailscale-serve";
+          ExecStart = "${t3code-server}/bin/t3 serve --host 0.0.0.0 --port 3773 --base-dir /var/lib/t3code --tailscale-serve /home/yanpla";
           Restart = "on-failure";
           RestartSec = "5s";
         };

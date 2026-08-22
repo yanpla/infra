@@ -27,6 +27,9 @@
 
     helium.url = "github:AlvaroParker/helium-nix";
     helium.inputs.nixpkgs.follows = "nixpkgs";
+
+    t3-code-nix.url = "github:LisaScheers/t3-code-nix";
+    t3-code-nix.inputs.nixpkgs.follows = "nixpkgs-unstable";
   };
 
   outputs =
