@@ -42,6 +42,7 @@
           claude-code
           codex
           pi-coding-agent
+          gh
           inputs.helium.packages.${pkgs.stdenv.hostPlatform.system}.default
         ];
 

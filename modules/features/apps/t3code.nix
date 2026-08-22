@@ -5,7 +5,6 @@
     {
       inputs,
       pkgs,
-      pkgs-unstable,
       ...
     }:
     let
@@ -32,11 +31,6 @@
           T3CODE_HOME = "/var/lib/t3code";
           T3CODE_DISABLE_AUTO_UPDATE = "1";
         };
-        path = with pkgs-unstable; [
-          git
-          gh
-          tailscale # t3code shells out to `tailscale serve`
-        ];
         serviceConfig = {
           User = "yanpla";
           Group = "users";
