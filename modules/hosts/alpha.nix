@@ -33,8 +33,6 @@
         '';
       in
       {
-        imports = [ inputs.delta-nix.nixosModules.default ];
-
         system.stateVersion = "25.11";
 
         environment.systemPackages = with pkgs-unstable; [
