@@ -46,6 +46,21 @@
         "type": "github"
       }
     },
+    "delta-nix": {
+      "locked": {
+        "lastModified": 1787298100,
+        "narHash": "sha256-bCT6Ld7uqb32YocWTlSBvgj0LgsBjt7ngndAv7CFqTg=",
+        "owner": "FelipeVasquez350",
+        "repo": "delta-nix",
+        "rev": "74401695d5873cb078f1a351070c8f0833cc1ba0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "FelipeVasquez350",
+        "repo": "delta-nix",
+        "type": "github"
+      }
+    },
     "den": {
       "locked": {
         "lastModified": 1786475005,
@@ -477,6 +492,7 @@
       "inputs": {
         "calagopus-nix": "calagopus-nix",
         "colmena": "colmena",
+        "delta-nix": "delta-nix",
         "den": "den",
         "disko": "disko",
         "helium": "helium",

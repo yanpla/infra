@@ -33,21 +33,9 @@
         '';
       in
       {
-        system.stateVersion = "25.11";
+        imports = [ inputs.delta-nix.nixosModules.default ];
 
-        # Run prebuilt/FHS binaries (e.g. Delta)
-        programs.nix-ld = {
-          enable = true;
-          libraries = with pkgs; [
-            glibc
-            libGL
-            vulkan-loader
-            wayland
-            libxkbcommon # delta bundles its own copy which expects /usr/share/X11/xkb
-            xorg.libX11
-            xorg.libxcb
-          ];
-        };
+        system.stateVersion = "25.11";
 
         environment.systemPackages = with pkgs-unstable; [
           zed-editor
@@ -64,6 +52,15 @@
           gh
           inputs.helium.packages.${pkgs.stdenv.hostPlatform.system}.default
         ];
+
+        programs.steam = {
+          enable = true;
+          remotePlay.openFirewall = true;
+          dedicatedServer.openFirewall = true;
+          localNetworkGameTransfers.openFirewall = true;
+        };
+
+        nixpkgs.config.allowUnfree = true;
 
         systemd.services.cap-cpu-boost = {
           description = "Cap CPU boost clock (workaround for hard resets at stock boost)";
