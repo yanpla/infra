@@ -46,6 +46,8 @@
           inputs.helium.packages.${pkgs.stdenv.hostPlatform.system}.default
         ];
 
+        programs.direnv.enable = true;
+
         programs.steam = {
           enable = true;
           remotePlay.openFirewall = true;
