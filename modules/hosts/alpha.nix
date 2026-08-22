@@ -51,6 +51,11 @@
 
         environment.systemPackages = with pkgs-unstable; [
           zed-editor
+          # Delta looks for a "zed" CLI; nixpkgs renames it to "zeditor"
+          (pkgs.runCommand "zed-cli-alias" { } ''
+            mkdir -p $out/bin
+            ln -s ${zed-editor}/bin/zeditor $out/bin/zed
+          '')
           nil
           nixd
           claude-code
