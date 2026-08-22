@@ -1,4 +1,10 @@
-{ den, pkgs, inputs, system, ... }:
+{
+  den,
+  pkgs,
+  inputs,
+  system,
+  ...
+}:
 {
   den.aspects.alpha = {
     includes = [
@@ -10,7 +16,7 @@
     ];
 
     nixos =
-      { pkgs, ... }:
+      { pkgs, pkgs-unstable, ... }:
       let
         maxKHz = 4800000;
 
@@ -28,8 +34,13 @@
       {
         system.stateVersion = "25.11";
 
-        environment.systemPackages = [
-          pkgs.zed-editor
+        environment.systemPackages = with pkgs-unstable; [
+          zed-editor
+          nil
+          nixd
+          claude-code
+          codex
+          pi-coding-agent
           inputs.helium.packages.${pkgs.stdenv.hostPlatform.system}.default
         ];
 
