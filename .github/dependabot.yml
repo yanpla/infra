@@ -5,7 +5,10 @@
 
 version: 2
 updates:
-  - package-ecosystem: "nix" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  - package-ecosystem: "nix"
+    directory: "/"
     schedule:
       interval: "weekly"
+    ignore:
+      - dependency-name: "infra-private"
+      - dependency-name: "starlight-web"
