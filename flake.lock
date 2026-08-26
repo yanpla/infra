@@ -9,11 +9,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1787400581,
-        "narHash": "sha256-+p5Ii09uW37pBT5J66oBRxpHm9x4onVwLKpnzRdRA1w=",
+        "lastModified": 1787487022,
+        "narHash": "sha256-YEWafpu2mbtvUc7KpEH+knYmFk9WQe66WeKQeYiGW+I=",
         "owner": "Saturn745",
         "repo": "calagopus-nix",
-        "rev": "4f13bc2d43a97e25facf69a13d1ebf4325873514",
+        "rev": "3de712563a3683aa031d460e5ee371356e3cdb04",
         "type": "github"
       },
       "original": {
