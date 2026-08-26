@@ -11,6 +11,7 @@ in
       den.aspects.starlight-web
       den.aspects.calagopus-panel
       den.aspects.calagopus-wings
+      den.aspects.walgit
     ];
     nixos = {
       # No DHCP on this network
