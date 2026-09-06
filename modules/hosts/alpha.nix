@@ -17,7 +17,7 @@
     ];
 
     nixos =
-      { pkgs, pkgs-unstable, ... }:
+      { pkgs, pkgs-master, ... }:
       let
         maxKHz = 4800000;
 
@@ -35,7 +35,7 @@
       {
         system.stateVersion = "25.11";
 
-        environment.systemPackages = with pkgs-unstable; [
+        environment.systemPackages = with pkgs-master; [
           zed-editor
           nil
           nixd

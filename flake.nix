@@ -3,7 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-master.url = "github:nixos/nixpkgs/master";
 
     colmena.url = "github:zhaofengli/colmena";
     colmena.inputs.nixpkgs.follows = "nixpkgs";
@@ -29,7 +29,7 @@
     helium.inputs.nixpkgs.follows = "nixpkgs";
 
     t3-code-nix.url = "github:LisaScheers/t3-code-nix";
-    t3-code-nix.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    t3-code-nix.inputs.nixpkgs.follows = "nixpkgs-master";
 
     walgit.url = "github:tobi/walgit";
     walgit.inputs.nixpkgs.follows = "nixpkgs";
@@ -43,7 +43,7 @@
 
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
-      pkgs-unstable = import inputs.nixpkgs-unstable {
+      pkgs-master = import inputs.nixpkgs-master {
         inherit system;
         config.allowUnfree = true;
       };
@@ -65,7 +65,7 @@
         host:
         lib.nixosSystem {
           inherit system;
-          specialArgs = { inherit inputs self pkgs-unstable; };
+          specialArgs = { inherit inputs self pkgs-master; };
           modules = serverModules host;
         }
       );
@@ -74,7 +74,7 @@
         {
           meta = {
             nixpkgs = pkgs;
-            specialArgs = { inherit inputs self pkgs-unstable; };
+            specialArgs = { inherit inputs self pkgs-master; };
           };
         }
         // lib.genAttrs servers (host: {
