@@ -17,6 +17,9 @@
     starlight-web.url = "git+ssh://git@github.com/All-Of-Us-Mods/Starlight-Web";
     starlight-web.inputs.nixpkgs.follows = "nixpkgs";
 
+    muzionnaire.url = "git+ssh://git@github.com/yanpla/muzionnaire";
+    muzionnaire.inputs.nixpkgs.follows = "nixpkgs";
+
     infra-private.url = "git+ssh://git@github.com/yanpla/infra-private";
 
     den.url = "github:denful/den";

@@ -369,6 +369,26 @@
         "type": "github"
       }
     },
+    "muzionnaire": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1788712707,
+        "narHash": "sha256-Rn8E3JYMjhF7SZRWMzOeOvz3WCVjKRg9AIOegZolNdU=",
+        "ref": "refs/heads/main",
+        "rev": "b650e4cf67a1ae2f0348633dbabc049e01b5e10e",
+        "revCount": 15,
+        "type": "git",
+        "url": "ssh://git@github.com/yanpla/muzionnaire"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/yanpla/muzionnaire"
+      }
+    },
     "nix-github-actions": {
       "inputs": {
         "nixpkgs": [
@@ -515,6 +535,7 @@
         "helium": "helium",
         "import-tree": "import-tree",
         "infra-private": "infra-private",
+        "muzionnaire": "muzionnaire",
         "nixpkgs": "nixpkgs",
         "nixpkgs-master": "nixpkgs-master",
         "starlight-web": "starlight-web",
