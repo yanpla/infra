@@ -376,11 +376,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1788818712,
-        "narHash": "sha256-1arZD7NBcO5uSbLhUe7UCs+js9lvCWFTsHyoKh5p0jg=",
+        "lastModified": 1788819010,
+        "narHash": "sha256-+WsNyjBKV/AE9gmrf95rBoZBNrCnc6h0/6tGo6Nh3Zk=",
         "ref": "refs/heads/main",
-        "rev": "ab81f9df5ea37ee275d402d01151f6b68916854a",
-        "revCount": 22,
+        "rev": "858af1d2b6f9823a5a20b6b20f62dc0235032550",
+        "revCount": 23,
         "type": "git",
         "url": "ssh://git@github.com/yanpla/muzionnaire"
       },
