@@ -9,15 +9,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1788807042,
+        "lastModified": 1788813615,
         "narHash": "sha256-uwEULZG9SfxC4eG4gdgZn6lFnshuZHDOb/cbvklqP+k=",
-        "owner": "yanpla",
+        "owner": "saturn745",
         "repo": "calagopus-nix",
-        "rev": "9607de373b8d92c9152fd4be6e4ff5abd5846c46",
+        "rev": "6e55ea460b6e2f84d23d444b6db443d762402a0c",
         "type": "github"
       },
       "original": {
-        "owner": "yanpla",
+        "owner": "saturn745",
         "repo": "calagopus-nix",
         "type": "github"
       }
