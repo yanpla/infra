@@ -25,7 +25,7 @@
     den.url = "github:denful/den";
     import-tree.url = "github:denful/import-tree";
 
-    calagopus-nix.url = "github:Saturn745/calagopus-nix";
+    calagopus-nix.url = "github:yanpla/calagopus-nix";
     calagopus-nix.inputs.nixpkgs.follows = "nixpkgs";
 
     helium.url = "github:AlvaroParker/helium-nix";

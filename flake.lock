@@ -9,15 +9,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1788783864,
-        "narHash": "sha256-cXUcpjXaySjIWKlpTU00IqQCYmLWoh2mPNkZniFyZ5Y=",
-        "owner": "Saturn745",
+        "lastModified": 1788807042,
+        "narHash": "sha256-uwEULZG9SfxC4eG4gdgZn6lFnshuZHDOb/cbvklqP+k=",
+        "owner": "yanpla",
         "repo": "calagopus-nix",
-        "rev": "16bccedbe174facb9921daf51e513b7f3dc9eeae",
+        "rev": "9607de373b8d92c9152fd4be6e4ff5abd5846c46",
         "type": "github"
       },
       "original": {
-        "owner": "Saturn745",
+        "owner": "yanpla",
         "repo": "calagopus-nix",
         "type": "github"
       }
@@ -461,11 +461,11 @@
     },
     "nixpkgs-master": {
       "locked": {
-        "lastModified": 1788803250,
-        "narHash": "sha256-Iiat1sohMdl8WgtiSBITqvbeWnDRaByTsOG4HmQfxzg=",
+        "lastModified": 1788806623,
+        "narHash": "sha256-2sF2/lrBuzypE7XcXGTRPNmq5Ze4sAgxWZuqIG+ilFU=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "d2bb9335dd5f20f8922a17a4c8d4d3088a6f4b27",
+        "rev": "39135594a8d61a1d49913875843faf62e6ae4747",
         "type": "github"
       },
       "original": {
