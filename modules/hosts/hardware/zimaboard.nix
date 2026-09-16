@@ -3,6 +3,7 @@
   den.aspects.zimaboard-hardware = {
     includes = [
       den.aspects.systemd-boot
+      den.aspects.disko
       # zram spares the eMMC's limited write endurance; no on-disk swap.
       den.aspects.zram-swap
     ];

@@ -1,7 +1,7 @@
 { den, ... }:
 {
   den.aspects.alpha-hardware = {
-    includes = [ den.aspects.systemd-boot ];
+    includes = [ den.aspects.systemd-boot den.aspects.disko ];
     nixos =
       {
         config,

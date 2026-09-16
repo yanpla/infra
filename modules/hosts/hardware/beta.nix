@@ -42,7 +42,10 @@ let
 in
 {
   den.aspects.beta-hardware = {
-    includes = [ den.aspects.grub-removable ];
+    includes = [
+      den.aspects.grub-removable
+      den.aspects.disko
+    ];
     nixos =
       {
         config,

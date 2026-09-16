@@ -1,7 +1,10 @@
 { den, ... }:
 {
   den.aspects.tunneler-hardware = {
-    includes = [ den.aspects.grub-removable ];
+    includes = [
+      den.aspects.grub-removable
+      den.aspects.disko
+    ];
     nixos =
       { lib, modulesPath, ... }:
       {
