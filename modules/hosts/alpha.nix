@@ -8,7 +8,7 @@
 {
   den.aspects.alpha = {
     includes = [
-      den.aspects.server
+      den.aspects.default
       den.aspects.alpha-hardware
       den.aspects.zram-swap
       den.aspects.calagopus-wings

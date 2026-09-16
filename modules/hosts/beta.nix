@@ -5,14 +5,13 @@ in
 {
   den.aspects.beta = {
     includes = [
-      den.aspects.server
+      den.aspects.default
       den.aspects.beta-hardware
       den.aspects.website
       den.aspects.starlight-web
       den.aspects.muzionnaire
       den.aspects.calagopus-panel
       den.aspects.calagopus-wings
-      den.aspects.walgit
     ];
     nixos = {
       # No DHCP on this network

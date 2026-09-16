@@ -5,11 +5,10 @@ in
 {
   den.aspects.tunneler = {
     includes = [
-      den.aspects.server
+      den.aspects.default
       den.aspects.tunneler-hardware
       den.aspects.postfix
       den.aspects.calagopus-wings
-      den.aspects.amongea
     ];
     nixos = {
       networking.useDHCP = false;
