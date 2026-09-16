@@ -1,8 +1,6 @@
 {
   den,
-  pkgs,
   inputs,
-  system,
   ...
 }:
 {
