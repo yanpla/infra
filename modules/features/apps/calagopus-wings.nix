@@ -6,7 +6,7 @@
   den.aspects.calagopus-wings.nixos =
     { inputs, lib, pkgs, ... }:
     let
-      wings = inputs.calagopus-nix.packages.${pkgs.system}.wings;
+      wings = inputs.calagopus-nix.packages.${pkgs.system}.wings-nightly;
       configFile = "/etc/calagopus/config.yml";
     in
     {
