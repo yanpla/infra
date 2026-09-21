@@ -1,16 +1,14 @@
 {
   # Calagopus Panel (github.com/calagopus/panel): calagopus-nix ships its own
-  # NixOS module plus an overlay providing pkgs.panel.
+  # NixOS module.
   den.aspects.calagopus-panel.nixos =
-    { inputs, ... }:
+    { inputs, pkgs, ... }:
     {
       imports = [ inputs.calagopus-nix.nixosModules.default ];
 
-      # The module's default `package = pkgs.panel` comes from this overlay.
-      nixpkgs.overlays = [ inputs.calagopus-nix.overlays.default ];
-
       services.calagopus-panel = {
         enable = true;
+        package = inputs.calagopus-nix.packages.${pkgs.stdenv.hostPlatform.system}.panel;
         bind = "127.0.0.1"; # nginx below is the public entrypoint
         port = 8000;
         trustedProxies = [ # trust local nginx's X-Forwarded-* headers
