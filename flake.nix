@@ -25,8 +25,8 @@
     den.url = "github:denful/den";
     import-tree.url = "github:denful/import-tree";
 
+    # No nixpkgs follows: keeps hashes matching upstream CI, so cachix hits.
     calagopus-nix.url = "github:calagopus/nix";
-    calagopus-nix.inputs.nixpkgs.follows = "nixpkgs";
 
     helium.url = "github:AlvaroParker/helium-nix";
     helium.inputs.nixpkgs.follows = "nixpkgs";
@@ -80,7 +80,7 @@
         // lib.genAttrs servers (host: {
           imports = serverModules host;
           deployment.targetHost = host;
-          deployment.targetUser = "yanpla";
+          deployment.targetUser = if host == "tunneler" then "root" else "yanpla";
           deployment.privilegeEscalationCommand = [
             "sudo"
             "-n"

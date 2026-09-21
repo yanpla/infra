@@ -1,4 +1,8 @@
+{ den, ... }:
 {
+  # Hostname comes from the den host name via the battery.
+  den.aspects.default.includes = [ den.batteries.hostname ];
+
   den.aspects.default.nixos =
   let
     sshKeys = [
@@ -25,7 +29,14 @@
     security.sudo.wheelNeedsPassword = false;
 
     nix = {
-      settings.experimental-features = [ "nix-command" "flakes" ];
+      settings = {
+        experimental-features = [ "nix-command" "flakes" ];
+        trusted-users = [ "root" "yanpla" ];
+        extra-substituters = [ "https://calagopus-nix.cachix.org" ];
+        extra-trusted-public-keys = [
+          "calagopus-nix.cachix.org-1:KnwFwKiw7rgY2depzwWWiPmLdW1gL5DfZKNTcUcB0oo="
+        ];
+      };
       gc = {
         automatic = true;
         dates = "weekly";
