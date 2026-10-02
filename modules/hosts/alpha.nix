@@ -40,6 +40,7 @@
           claude-code
           codex
           pi-coding-agent
+          vinegar
           gh
           inputs.helium.packages.${pkgs.stdenv.hostPlatform.system}.default
         ];
