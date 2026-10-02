@@ -12,6 +12,7 @@
       den.aspects.calagopus-wings
       den.aspects.desktop
       den.aspects.t3code
+      den.aspects.cua-driver
     ];
 
     nixos =
