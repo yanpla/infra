@@ -41,6 +41,7 @@
       };
 
       virtualisation.docker.enable = true; # wings drives containers over the docker socket
+      users.users.yanpla.extraGroups = [ "docker" ];
 
       # SFTP is public; the HTTP API is tailnet-only so a remote panel can still reach it.
       networking.firewall.allowedTCPPorts = [
