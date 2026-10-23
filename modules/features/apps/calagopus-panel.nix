@@ -1,7 +1,7 @@
 {
   # Calagopus Panel (github.com/calagopus/panel): calagopus-nix ships its own
   # NixOS module.
-  den.aspects.calagopus-panel.nixos =
+  modules.nixos.calagopus-panel =
     { inputs, pkgs, ... }:
     {
       imports = [ inputs.calagopus-nix.nixosModules.default ];

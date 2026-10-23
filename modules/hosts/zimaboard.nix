@@ -1,10 +1,13 @@
-{ den, ... }:
+{ config, ... }:
+let
+  nixos = config.modules.nixos;
+in
 {
-  den.aspects.zimaboard = {
-    includes = [
-      den.aspects.default
-      den.aspects.zimaboard-hardware
+  hosts.zimaboard = {
+    imports = [
+      nixos.default
+      nixos.zimaboard-hardware
     ];
-    nixos.system.stateVersion = "25.11";
+    system.stateVersion = "25.11";
   };
 }

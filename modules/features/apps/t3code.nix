@@ -1,7 +1,7 @@
 {
   # Headless t3code for remote agent access over the tailnet.
   # Runs as `yanpla` (admin.nix) so the in-app terminal shares his home dir.
-  den.aspects.t3code.nixos =
+  modules.nixos.t3code =
     {
       inputs,
       pkgs,

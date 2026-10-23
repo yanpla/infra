@@ -1,7 +1,7 @@
 {
   # Serves starlight.allofus.dev: the Starlight-Web SvelteKit app with a
   # local PostgreSQL database and nginx + ACME TLS in front.
-  den.aspects.starlight-web.nixos =
+  modules.nixos.starlight-web =
     { inputs, pkgs, ... }:
     let
       pkg = inputs.starlight-web.packages.${pkgs.system}.starlight-web;

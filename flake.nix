@@ -8,9 +8,6 @@
     colmena.url = "github:zhaofengli/colmena";
     colmena.inputs.nixpkgs.follows = "nixpkgs";
 
-    disko.url = "github:nix-community/disko";
-    disko.inputs.nixpkgs.follows = "nixpkgs";
-
     website.url = "git+ssh://git@github.com/yanpla/website";
     website.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -21,9 +18,6 @@
     muzionnaire.inputs.nixpkgs.follows = "nixpkgs";
 
     infra-private.url = "git+ssh://git@github.com/yanpla/infra-private";
-
-    den.url = "github:denful/den";
-    import-tree.url = "github:denful/import-tree";
 
     # No nixpkgs follows: keeps hashes matching upstream CI, so cachix hits.
     calagopus-nix.url = "github:calagopus/nix";
@@ -48,17 +42,19 @@
         config.allowUnfree = true;
       };
 
-      # Hosts/aspects are declared in modules/den.nix; each host exposes a mainModule pulling in its aspects.
-      den =
+      # Every .nix file under modules/ is a top-level module; see modules/schema.nix.
+      tree =
         (lib.evalModules {
-          modules = [ (inputs.import-tree ./modules) ];
+          modules = lib.filter (lib.hasSuffix ".nix") (lib.filesystem.listFilesRecursive ./modules);
           specialArgs.inputs = inputs;
         }).config;
 
-      denHosts = den.den.hosts.x86_64-linux;
-      servers = builtins.attrNames denHosts;
+      servers = builtins.attrNames tree.hosts;
 
-      serverModules = host: [ denHosts.${host}.mainModule ];
+      serverModules = host: [
+        tree.hosts.${host}
+        { networking.hostName = host; }
+      ];
     in
     {
       nixosConfigurations = lib.genAttrs servers (

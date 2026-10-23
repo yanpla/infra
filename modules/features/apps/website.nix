@@ -1,7 +1,7 @@
 {
   # Serves yanpla.nl: the Astro SSR server from the website flake input,
   # fronted by nginx with ACME TLS.
-  den.aspects.website.nixos =
+  modules.nixos.website =
     { inputs, pkgs, ... }:
     {
       systemd.services.website = {

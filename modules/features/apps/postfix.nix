@@ -2,7 +2,7 @@
   # Send-only mail relay. Only reachable over the tailnet, so the panel on beta
   # can hand off mail here and tunneler (which has the public IP and the mail
   # PTR/DNS records) does the actual delivery to the internet.
-  den.aspects.postfix.nixos = {
+  modules.nixos.postfix = {
     services.postfix = {
       enable = true;
       hostname = "mail.yanpla.nl";

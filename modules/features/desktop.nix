@@ -3,7 +3,7 @@
   # autologin keeps a live session running so Sunshine always has a desktop to
   # stream. Connect from Moonlight clients; pair via https://<host>:47990
   # (PIN flow) or mDNS discovery on the LAN. Works over LAN and tailnet alike.
-  den.aspects.desktop.nixos =
+  modules.nixos.desktop =
     { pkgs, lib, ... }:
     {
       services.displayManager.sddm = {

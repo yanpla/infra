@@ -1,7 +1,7 @@
 {
   # Serves music.yanpla.nl: the static Muzionnaire site built by its own
   # flake, handed straight to nginx with ACME TLS.
-  den.aspects.muzionnaire.nixos =
+  modules.nixos.muzionnaire =
     { inputs, pkgs, ... }:
     let
       site = inputs.muzionnaire.packages.${pkgs.system}.website;

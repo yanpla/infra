@@ -1,9 +1,6 @@
-{ den, ... }:
 {
-  # Hostname comes from the den host name via the battery.
-  den.aspects.default.includes = [ den.batteries.hostname ];
-
-  den.aspects.default.nixos =
+  # Base config for every host; networking.hostName is set from the host name in flake.nix.
+  modules.nixos.default =
   let
     sshKeys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAVJA3E6FIAy52QV0fVvFeZUTTuHkJ+P+H8H39XSOLIw"

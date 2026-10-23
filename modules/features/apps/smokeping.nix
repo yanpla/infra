@@ -2,7 +2,7 @@
   # Serves smokeping.plantenga.net behind Google SSO (novoserve.com only).
   # Needs the Google OAuth client JSON on the host at
   # /root/secrets/smokeping-google-oauth.json (root, 0600).
-  den.aspects.smokeping.nixos =
+  modules.nixos.smokeping =
     { config, pkgs, ... }:
     let
       domain = "smokeping.plantenga.net";
