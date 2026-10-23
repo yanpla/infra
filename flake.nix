@@ -5,6 +5,9 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
 
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    flake-parts.inputs.nixpkgs-lib.follows = "nixpkgs";
+
     colmena.url = "github:zhaofengli/colmena";
     colmena.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -30,62 +33,20 @@
   };
 
   outputs =
-    { self, ... }@inputs:
+    inputs:
     let
-      inherit (inputs) nixpkgs;
-      inherit (nixpkgs) lib;
+      inherit (inputs.nixpkgs) lib;
 
-      system = "x86_64-linux";
-      pkgs = import nixpkgs { inherit system; };
-      pkgs-master = import inputs.nixpkgs-master {
-        inherit system;
-        config.allowUnfree = true;
-      };
-
-      # Every .nix file under modules/ is a top-level module (see modules/schema.nix),
-      # except each host's hardware-configuration.nix, which its configuration.nix imports by path.
-      isTopLevelModule =
-        path: lib.hasSuffix ".nix" path && baseNameOf path != "hardware-configuration.nix";
-
-      tree =
-        (lib.evalModules {
-          modules = lib.filter isTopLevelModule (lib.filesystem.listFilesRecursive ./modules);
-          specialArgs.inputs = inputs;
-        }).config;
-
-      servers = builtins.attrNames tree.hosts;
-
-      serverModules = host: [
-        tree.hosts.${host}
-        { networking.hostName = host; }
-      ];
+      # Every .nix file under modules/ is a flake-parts module, except each host's
+      # hardware-configuration.nix, which its configuration.nix imports by path.
+      isFlakeModule = path: lib.hasSuffix ".nix" path && baseNameOf path != "hardware-configuration.nix";
     in
-    {
-      nixosConfigurations = lib.genAttrs servers (
-        host:
-        lib.nixosSystem {
-          inherit system;
-          specialArgs = { inherit inputs self pkgs-master; };
-          modules = serverModules host;
-        }
-      );
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } {
+      imports = [
+        inputs.flake-parts.flakeModules.modules
+      ]
+      ++ lib.filter isFlakeModule (lib.filesystem.listFilesRecursive ./modules);
 
-      colmenaHive = inputs.colmena.lib.makeHive (
-        {
-          meta = {
-            nixpkgs = pkgs;
-            specialArgs = { inherit inputs self pkgs-master; };
-          };
-        }
-        // lib.genAttrs servers (host: {
-          imports = serverModules host;
-          deployment.targetHost = host;
-          deployment.targetUser = if host == "tunneler" then "root" else "yanpla";
-          deployment.privilegeEscalationCommand = [
-            "sudo"
-            "-n"
-          ];
-        })
-      );
+      systems = [ "x86_64-linux" ];
     };
 }

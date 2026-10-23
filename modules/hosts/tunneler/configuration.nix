@@ -1,6 +1,6 @@
 { config, inputs, ... }:
 let
-  nixos = config.modules.nixos;
+  nixos = config.flake.modules.nixos;
   net = inputs.infra-private.hostNetworking.tunneler;
 in
 {

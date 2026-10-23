@@ -1,6 +1,6 @@
 { config, ... }:
 let
-  nixos = config.modules.nixos;
+  nixos = config.flake.modules.nixos;
 in
 {
   hosts.zimaboard = {

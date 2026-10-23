@@ -1,7 +1,7 @@
 {
   # Headless t3code for remote agent access over the tailnet.
   # Runs as `yanpla` (admin.nix) so the in-app terminal shares his home dir.
-  modules.nixos.t3code =
+  flake.modules.nixos.t3code =
     {
       inputs,
       pkgs,
