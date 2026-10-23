@@ -14,7 +14,7 @@
           PORT = "4321";
         };
         serviceConfig = {
-          ExecStart = "${inputs.website.packages.${pkgs.system}.default}/bin/website";
+          ExecStart = "${inputs.website.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/website";
           DynamicUser = true;
           Restart = "on-failure";
           RestartSec = "5s";
@@ -25,27 +25,11 @@
         };
       };
 
-      services.nginx = {
-        enable = true;
-        recommendedProxySettings = true;
-        recommendedTlsSettings = true;
-        recommendedGzipSettings = true;
-        virtualHosts."yanpla.nl" = {
-          # No www CNAME exists; add one before re-adding a www alias here.
-          enableACME = true;
-          forceSSL = true;
-          locations."/".proxyPass = "http://127.0.0.1:4321";
-        };
+      services.nginx.virtualHosts."yanpla.nl" = {
+        # No www CNAME exists; add one before re-adding a www alias here.
+        enableACME = true;
+        forceSSL = true;
+        locations."/".proxyPass = "http://127.0.0.1:4321";
       };
-
-      security.acme = {
-        acceptTerms = true;
-        defaults.email = "me@yanpla.nl";
-      };
-
-      networking.firewall.allowedTCPPorts = [
-        80
-        443
-      ];
     };
 }

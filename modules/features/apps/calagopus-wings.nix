@@ -4,7 +4,12 @@
   # Config is issued by the panel, not declared here: create a node in the
   # panel UI and copy its generated YAML to /etc/calagopus/config.yml.
   flake.modules.nixos.calagopus-wings =
-    { inputs, lib, pkgs, ... }:
+    {
+      inputs,
+      lib,
+      pkgs,
+      ...
+    }:
     let
       wings = inputs.calagopus-nix.packages.${pkgs.stdenv.hostPlatform.system}.wings;
       configFile = "/etc/calagopus/config.yml";

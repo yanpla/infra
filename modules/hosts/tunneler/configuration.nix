@@ -8,7 +8,6 @@ in
     imports = [
       ./hardware-configuration.nix
       nixos.default
-      nixos.grub-removable
       nixos.postfix
       nixos.calagopus-wings
     ];
@@ -32,5 +31,11 @@ in
     ];
 
     system.stateVersion = "25.11";
+
+    # GRUB on the removable EFI path, with a BIOS boot partition as legacy fallback.
+    boot.loader.grub = {
+      efiSupport = true;
+      efiInstallAsRemovable = true;
+    };
   };
 }

@@ -4,8 +4,13 @@ let
 in
 {
   hosts.alpha =
-    { pkgs, pkgs-master, ... }:
+    { pkgs, ... }:
     let
+      pkgs-master = import inputs.nixpkgs-master {
+        inherit (pkgs.stdenv.hostPlatform) system;
+        config.allowUnfree = true;
+      };
+
       maxKHz = 4800000;
 
       capBoost = pkgs.writeShellScript "cap-cpu-boost" ''
@@ -23,14 +28,15 @@ in
       imports = [
         ./hardware-configuration.nix
         nixos.default
-        nixos.systemd-boot
-        nixos.zram-swap
         nixos.calagopus-wings
         nixos.desktop
         nixos.t3code
       ];
 
       system.stateVersion = "25.11";
+
+      boot.loader.systemd-boot.enable = true;
+      boot.loader.efi.canTouchEfiVariables = true;
 
       environment.systemPackages = with pkgs-master; [
         zed-editor

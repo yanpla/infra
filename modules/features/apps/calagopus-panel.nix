@@ -9,9 +9,10 @@
       services.calagopus-panel = {
         enable = true;
         package = inputs.calagopus-nix.packages.${pkgs.stdenv.hostPlatform.system}.panel;
-        bind = "127.0.0.1"; # nginx below is the public entrypoint
+        bind = "127.0.0.1"; # nginx is the public entrypoint
         port = 8000;
-        trustedProxies = [ # trust local nginx's X-Forwarded-* headers
+        trustedProxies = [
+          # trust local nginx's X-Forwarded-* headers
           "127.0.0.1"
           "::1"
         ];
@@ -25,29 +26,13 @@
       # Proxies wings traffic so wings' API can stay tailnet-only.
       systemd.services.calagopus-panel.environment.APP_ENABLE_WINGS_PROXY = "true";
 
-      services.nginx = {
-        enable = true;
-        recommendedProxySettings = true; # sets X-Forwarded-For/-Proto/-Host
-        recommendedTlsSettings = true;
-        recommendedGzipSettings = true;
-        virtualHosts."panel.yanpla.nl" = {
-          enableACME = true;
-          forceSSL = true;
-          locations."/" = {
-            proxyPass = "http://127.0.0.1:8000";
-            proxyWebsockets = true; # panel uses websockets for live console
-          };
+      services.nginx.virtualHosts."panel.yanpla.nl" = {
+        enableACME = true;
+        forceSSL = true;
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:8000";
+          proxyWebsockets = true; # panel uses websockets for live console
         };
       };
-
-      security.acme = {
-        acceptTerms = true;
-        defaults.email = "me@yanpla.nl";
-      };
-
-      networking.firewall.allowedTCPPorts = [
-        80
-        443
-      ];
     };
 }

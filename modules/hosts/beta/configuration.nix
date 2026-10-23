@@ -12,7 +12,6 @@ in
       imports = [
         ./hardware-configuration.nix
         nixos.default
-        nixos.grub-removable
         nixos.website
         nixos.starlight-web
         nixos.muzionnaire
@@ -54,5 +53,27 @@ in
       ];
 
       system.stateVersion = "26.05";
+
+      # GRUB on the removable EFI path, with a BIOS boot partition as legacy fallback.
+      boot.loader.grub = {
+        efiSupport = true;
+        efiInstallAsRemovable = true;
+      };
+
+      # Shared front door for the web apps above; each app only declares its vhost.
+      services.nginx = {
+        enable = true;
+        recommendedProxySettings = true; # sets X-Forwarded-For/-Proto/-Host
+        recommendedTlsSettings = true;
+        recommendedGzipSettings = true;
+      };
+      security.acme = {
+        acceptTerms = true;
+        defaults.email = "me@yanpla.nl";
+      };
+      networking.firewall.allowedTCPPorts = [
+        80
+        443
+      ];
     };
 }

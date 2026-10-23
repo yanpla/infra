@@ -91,55 +91,39 @@
         };
       };
 
-      services.nginx = {
-        enable = true;
-        recommendedProxySettings = true;
-        recommendedTlsSettings = true;
-        recommendedGzipSettings = true;
-        # The smokeping module creates this vhost; it only adds TLS and auth here.
-        virtualHosts.smokeping = {
-          enableACME = true;
-          forceSSL = true;
+      # The smokeping module creates this vhost; it only adds TLS and auth here.
+      services.nginx.virtualHosts.smokeping = {
+        enableACME = true;
+        forceSSL = true;
+        extraConfig = ''
+          auth_request /oauth2/auth;
+          auth_request_set $smokeping_user $upstream_http_x_auth_request_email;
+          auth_request_set $auth_cookie $upstream_http_set_cookie;
+          error_page 401 = /oauth2/sign_in;
+          add_header Set-Cookie $auth_cookie;
+          add_header X-Robots-Tag "noindex, nofollow" always;
+        '';
+        locations."/smokeping.fcgi".extraConfig = ''
+          fastcgi_param REMOTE_USER $smokeping_user;
+        '';
+        locations."/brand/".alias = "${./smokeping/static}/";
+        locations."/oauth2/" = {
+          proxyPass = oauth2Proxy;
           extraConfig = ''
-            auth_request /oauth2/auth;
-            auth_request_set $smokeping_user $upstream_http_x_auth_request_email;
-            auth_request_set $auth_cookie $upstream_http_set_cookie;
-            error_page 401 = /oauth2/sign_in;
-            add_header Set-Cookie $auth_cookie;
-            add_header X-Robots-Tag "noindex, nofollow" always;
+            auth_request off;
+            proxy_set_header X-Scheme $scheme;
+            proxy_set_header X-Auth-Request-Redirect $request_uri;
           '';
-          locations."/smokeping.fcgi".extraConfig = ''
-            fastcgi_param REMOTE_USER $smokeping_user;
+        };
+        locations."= /oauth2/auth" = {
+          proxyPass = oauth2Proxy;
+          extraConfig = ''
+            auth_request off;
+            proxy_set_header X-Scheme $scheme;
+            proxy_set_header Content-Length "";
+            proxy_pass_request_body off;
           '';
-          locations."/brand/".alias = "${./smokeping/static}/";
-          locations."/oauth2/" = {
-            proxyPass = oauth2Proxy;
-            extraConfig = ''
-              auth_request off;
-              proxy_set_header X-Scheme $scheme;
-              proxy_set_header X-Auth-Request-Redirect $request_uri;
-            '';
-          };
-          locations."= /oauth2/auth" = {
-            proxyPass = oauth2Proxy;
-            extraConfig = ''
-              auth_request off;
-              proxy_set_header X-Scheme $scheme;
-              proxy_set_header Content-Length "";
-              proxy_pass_request_body off;
-            '';
-          };
         };
       };
-
-      security.acme = {
-        acceptTerms = true;
-        defaults.email = "me@yanpla.nl";
-      };
-
-      networking.firewall.allowedTCPPorts = [
-        80
-        443
-      ];
     };
 }

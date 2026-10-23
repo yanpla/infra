@@ -5,26 +5,27 @@
   flake.modules.nixos.postfix = {
     services.postfix = {
       enable = true;
-      hostname = "mail.yanpla.nl";
-      domain = "yanpla.nl";
-      origin = "yanpla.nl"; # bare local senders become user@yanpla.nl
-
-      # Relaying is allowed from mynetworks only (postfix's default
-      # smtpd_relay_restrictions rejects everything else). The whole tailnet
-      # CGNAT range, since tailnet IPs aren't statically assigned here; the
-      # firewall below is what actually keeps this off the public interface.
-      networks = [
-        "127.0.0.0/8"
-        "[::1]/128"
-        "100.64.0.0/10"
-      ];
-
-      # Nothing is delivered locally except bounces/postmaster mail.
-      destination = [ "localhost" ];
       rootAlias = "me@yanpla.nl";
       postmasterAlias = "root";
 
       settings.main = {
+        myhostname = "mail.yanpla.nl";
+        mydomain = "yanpla.nl";
+        myorigin = "yanpla.nl"; # bare local senders become user@yanpla.nl
+
+        # Nothing is delivered locally except bounces/postmaster mail.
+        mydestination = [ "localhost" ];
+
+        # Relaying is allowed from mynetworks only (postfix's default
+        # smtpd_relay_restrictions rejects everything else). The whole tailnet
+        # CGNAT range, since tailnet IPs aren't statically assigned here; the
+        # firewall is what actually keeps this off the public interface.
+        mynetworks = [
+          "127.0.0.0/8"
+          "[::1]/128"
+          "100.64.0.0/10"
+        ];
+
         inet_protocols = "ipv4"; # no IPv6 on this host; avoids delivery stalls
 
         # The panel submits mail without a Message-ID, and Gmail rejects that

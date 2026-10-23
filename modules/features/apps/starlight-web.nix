@@ -4,7 +4,7 @@
   flake.modules.nixos.starlight-web =
     { inputs, pkgs, ... }:
     let
-      pkg = inputs.starlight-web.packages.${pkgs.system}.starlight-web;
+      pkg = inputs.starlight-web.packages.${pkgs.stdenv.hostPlatform.system}.starlight-web;
       src = inputs.starlight-web;
       # Peer auth over the unix socket (dir via PGHOST below): don't put the
       # socket path in the URL — postgres.js forwards unknown query params
@@ -72,26 +72,10 @@
         };
       };
 
-      services.nginx = {
-        enable = true;
-        recommendedProxySettings = true;
-        recommendedTlsSettings = true;
-        recommendedGzipSettings = true;
-        virtualHosts."starlight.yanpla.nl" = {
-          enableACME = true;
-          forceSSL = true;
-          locations."/".proxyPass = "http://127.0.0.1:3000";
-        };
+      services.nginx.virtualHosts."starlight.yanpla.nl" = {
+        enableACME = true;
+        forceSSL = true;
+        locations."/".proxyPass = "http://127.0.0.1:3000";
       };
-
-      security.acme = {
-        acceptTerms = true;
-        defaults.email = "me@yanpla.nl";
-      };
-
-      networking.firewall.allowedTCPPorts = [
-        80
-        443
-      ];
     };
 }

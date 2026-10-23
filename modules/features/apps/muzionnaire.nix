@@ -4,32 +4,16 @@
   flake.modules.nixos.muzionnaire =
     { inputs, pkgs, ... }:
     let
-      site = inputs.muzionnaire.packages.${pkgs.system}.website;
+      site = inputs.muzionnaire.packages.${pkgs.stdenv.hostPlatform.system}.website;
     in
     {
-      services.nginx = {
-        enable = true;
-        recommendedProxySettings = true;
-        recommendedTlsSettings = true;
-        recommendedGzipSettings = true;
-        virtualHosts."music.yanpla.nl" = {
-          enableACME = true;
-          forceSSL = true;
-          root = site;
-          locations."/".extraConfig = ''
-            try_files $uri $uri/index.html $uri.html =404;
-          '';
-        };
+      services.nginx.virtualHosts."music.yanpla.nl" = {
+        enableACME = true;
+        forceSSL = true;
+        root = site;
+        locations."/".extraConfig = ''
+          try_files $uri $uri/index.html $uri.html =404;
+        '';
       };
-
-      security.acme = {
-        acceptTerms = true;
-        defaults.email = "me@yanpla.nl";
-      };
-
-      networking.firewall.allowedTCPPorts = [
-        80
-        443
-      ];
     };
 }

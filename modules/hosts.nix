@@ -2,20 +2,11 @@
   config,
   inputs,
   lib,
-  self,
   ...
 }:
 let
-  system = "x86_64-linux";
-  pkgs = import inputs.nixpkgs { inherit system; };
-  pkgs-master = import inputs.nixpkgs-master {
-    inherit system;
-    config.allowUnfree = true;
-  };
-  specialArgs = { inherit inputs self pkgs-master; };
-
-  hostModules = host: [
-    config.hosts.${host}
+  hostModules = host: module: [
+    module
     { networking.hostName = host; }
   ];
 in
@@ -30,22 +21,22 @@ in
 
   config.flake = {
     nixosConfigurations = lib.mapAttrs (
-      host: _:
+      host: module:
       lib.nixosSystem {
-        inherit system specialArgs;
-        modules = hostModules host;
+        specialArgs = { inherit inputs; };
+        modules = hostModules host module;
       }
     ) config.hosts;
 
     colmenaHive = inputs.colmena.lib.makeHive (
       {
         meta = {
-          nixpkgs = pkgs;
-          inherit specialArgs;
+          nixpkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
+          specialArgs = { inherit inputs; };
         };
       }
-      // lib.mapAttrs (host: _: {
-        imports = hostModules host;
+      // lib.mapAttrs (host: module: {
+        imports = hostModules host module;
         deployment.targetHost = host;
         deployment.targetUser = if host == "tunneler" then "root" else "yanpla";
         deployment.privilegeEscalationCommand = [
