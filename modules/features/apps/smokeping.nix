@@ -76,6 +76,7 @@
         approvalPrompt = "auto";
         setXauthrequest = true;
         reverseProxy = true;
+        trustedProxyIP = [ "127.0.0.1" ]; # only local nginx may set X-Forwarded-*
         upstream = [ "static://202" ];
         extraConfig."skip-provider-button" = true;
       };

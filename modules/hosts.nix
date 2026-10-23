@@ -38,7 +38,7 @@ in
       // lib.mapAttrs (host: module: {
         imports = hostModules host module;
         deployment.targetHost = host;
-        deployment.targetUser = if host == "tunneler" then "root" else "yanpla";
+        deployment.targetUser = "yanpla";
         deployment.privilegeEscalationCommand = [
           "sudo"
           "-n"

@@ -40,10 +40,6 @@ in
               GatewayOnLink = true;
             }
           ];
-          networkConfig.DNS = [
-            "1.1.1.1"
-            "8.8.8.8"
-          ];
           linkConfig.RequiredForOnline = "routable";
         };
       };
