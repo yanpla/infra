@@ -6,8 +6,9 @@ in
 {
   hosts.tunneler = {
     imports = [
+      ./hardware-configuration.nix
       nixos.default
-      nixos.tunneler-hardware
+      nixos.grub-removable
       nixos.postfix
       nixos.calagopus-wings
     ];

@@ -10,8 +10,9 @@ in
     in
     {
       imports = [
+        ./hardware-configuration.nix
         nixos.default
-        nixos.beta-hardware
+        nixos.grub-removable
         nixos.website
         nixos.starlight-web
         nixos.muzionnaire

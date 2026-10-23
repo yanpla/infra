@@ -42,10 +42,14 @@
         config.allowUnfree = true;
       };
 
-      # Every .nix file under modules/ is a top-level module; see modules/schema.nix.
+      # Every .nix file under modules/ is a top-level module (see modules/schema.nix),
+      # except each host's hardware-configuration.nix, which its configuration.nix imports by path.
+      isTopLevelModule =
+        path: lib.hasSuffix ".nix" path && baseNameOf path != "hardware-configuration.nix";
+
       tree =
         (lib.evalModules {
-          modules = lib.filter (lib.hasSuffix ".nix") (lib.filesystem.listFilesRecursive ./modules);
+          modules = lib.filter isTopLevelModule (lib.filesystem.listFilesRecursive ./modules);
           specialArgs.inputs = inputs;
         }).config;
 

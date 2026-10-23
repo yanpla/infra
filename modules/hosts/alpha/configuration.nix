@@ -21,8 +21,9 @@ in
     in
     {
       imports = [
+        ./hardware-configuration.nix
         nixos.default
-        nixos.alpha-hardware
+        nixos.systemd-boot
         nixos.zram-swap
         nixos.calagopus-wings
         nixos.desktop
