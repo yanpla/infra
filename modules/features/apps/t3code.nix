@@ -18,6 +18,32 @@
         permitCertUid = "yanpla";
       };
 
+      # Libraries for the chrome-headless-shell t3code downloads for its browser.
+      programs.nix-ld = {
+        enable = true;
+        libraries = with pkgs; [
+          glib
+          nspr
+          nss
+          at-spi2-core
+          dbus
+          expat
+          libgbm
+          alsa-lib
+          systemd
+          libxkbcommon
+          libx11
+          libxcb
+          libxcomposite
+          libxdamage
+          libxext
+          libxfixes
+          libxrandr
+          fontconfig
+          freetype
+        ];
+      };
+
       systemd.services.t3code = {
         description = "t3code web server";
         wantedBy = [ "multi-user.target" ];
