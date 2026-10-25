@@ -18,8 +18,12 @@
       systemd.services.calagopus-wings = {
         description = "Calagopus Wings";
         wantedBy = [ "multi-user.target" ];
-        # wings shells out to useradd/groupadd if the runner user is missing.
-        path = [ pkgs.shadow ];
+        # wings shells out to useradd/groupadd if the runner user is missing, and
+        # to restic for the zimaboard backup configuration.
+        path = [
+          pkgs.shadow
+          pkgs.restic
+        ];
         after = [
           "network-online.target"
           "docker.service"

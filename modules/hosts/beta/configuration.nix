@@ -17,6 +17,7 @@ in
         nixos.muzionnaire
         nixos.calagopus-panel
         nixos.calagopus-wings
+        nixos.calagopus-db-agent
         nixos.smokeping
       ];
 

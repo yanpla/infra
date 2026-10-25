@@ -7,6 +7,7 @@ in
     imports = [
       ./hardware-configuration.nix
       nixos.default
+      nixos.calagopus-backups
     ];
     system.stateVersion = "25.11";
 

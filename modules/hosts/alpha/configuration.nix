@@ -29,6 +29,7 @@ in
         ./hardware-configuration.nix
         nixos.default
         nixos.calagopus-wings
+        nixos.calagopus-db-agent
         nixos.desktop
         nixos.t3code
       ];

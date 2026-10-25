@@ -10,6 +10,7 @@ in
       nixos.default
       nixos.postfix
       nixos.calagopus-wings
+      nixos.calagopus-db-agent
     ];
 
     networking.useDHCP = false;
