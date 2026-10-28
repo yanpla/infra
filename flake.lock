@@ -598,11 +598,11 @@
         "pre-commit-hooks": "pre-commit-hooks"
       },
       "locked": {
-        "lastModified": 1792751083,
-        "narHash": "sha256-oI3CflDNymB0k8Prpx22QYiPGGfGrlk1jpM52eAMEw8=",
+        "lastModified": 1792925384,
+        "narHash": "sha256-YTTqkCP/zoekCRe0Hh9MmET3P5agwn4H+hG4VWMv4Ao=",
         "owner": "LisaScheers",
         "repo": "t3-code-nix",
-        "rev": "44013860205ffb0a66e0f09f10e9cea94bd690c4",
+        "rev": "abba6aa4bd02c9c17a8ec71f7ae13971240a6a68",
         "type": "github"
       },
       "original": {
