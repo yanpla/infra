@@ -7,11 +7,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1792687902,
-        "narHash": "sha256-if1fDQYnkOd2dLxgjCsvd9Fm35AN8Tu+9hMkBAO8prk=",
+        "lastModified": 1793191409,
+        "narHash": "sha256-xi/OPhPU1yj64Z2fmaI0yrUjd1Srl2T60S1712UxMdg=",
         "owner": "calagopus",
         "repo": "nix",
-        "rev": "cab6c265a6945efcdb1561b8305277aa6eef310a",
+        "rev": "d85c9aadaef36a1bf39d5f643be316a497134c45",
         "type": "github"
       },
       "original": {
