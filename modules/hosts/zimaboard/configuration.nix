@@ -8,6 +8,7 @@ in
       ./hardware-configuration.nix
       nixos.default
       nixos.calagopus-backups
+      nixos.monitoring
     ];
     system.stateVersion = "25.11";
 

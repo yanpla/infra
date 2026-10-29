@@ -1,3 +1,4 @@
+{ config, ... }:
 {
   # Base config for every host; networking.hostName is set from the host name in flake.nix.
   flake.modules.nixos.default =
@@ -9,6 +10,8 @@
     ];
   in
   {
+    imports = [ config.flake.modules.nixos.node-exporter ];
+
     users.users.root.openssh.authorizedKeys.keys = sshKeys;
     users.users.yanpla = {
       isNormalUser = true;
