@@ -53,6 +53,14 @@
         ];
         wants = [ "network-online.target" ];
         requires = [ "tailscaled.service" ];
+        # Agent shells inherit this PATH; without these they burn turns on
+        # `command not found` and `nix run` workarounds.
+        path = with pkgs; [
+          python3
+          nodejs
+          jq
+          gcc
+        ];
         environment = {
           T3CODE_HOME = "/var/lib/t3code";
           T3CODE_DISABLE_AUTO_UPDATE = "1";
