@@ -514,11 +514,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794258786,
-        "narHash": "sha256-OxMh3Muu4FBIJUsS9WwXBImUHzAZQulWpgtBAkr60xA=",
+        "lastModified": 1794259589,
+        "narHash": "sha256-uBw3aTeLH3Y5DBlQWUwvvyvTXiIZRhK/G0HCvm7NIls=",
         "ref": "original",
-        "rev": "c1fca0bd5089664c425fd3d75f36445b2372f44e",
-        "revCount": 40,
+        "rev": "d2a41f53670222abf7390a4937f25a5aed8b98ad",
+        "revCount": 41,
         "type": "git",
         "url": "ssh://git@github.com/All-Of-Us-Mods/Starlight-Web"
       },
