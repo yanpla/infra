@@ -30,11 +30,8 @@ in
         nixos.default
         nixos.calagopus-wings
         nixos.calagopus-db-agent
-        nixos.desktop
         nixos.t3code
       ];
-
-      system.stateVersion = "25.11";
 
       boot.loader.systemd-boot.enable = true;
       boot.loader.efi.canTouchEfiVariables = true;
@@ -53,6 +50,7 @@ in
 
       programs.direnv.enable = true;
       programs.nix-ld.enable = true;
+      nixpkgs.config.allowUnfree = true;
 
       programs.steam = {
         enable = true;
@@ -60,8 +58,6 @@ in
         dedicatedServer.openFirewall = true;
         localNetworkGameTransfers.openFirewall = true;
       };
-
-      nixpkgs.config.allowUnfree = true;
 
       systemd.services.cap-cpu-boost = {
         description = "Cap CPU boost clock (workaround for hard resets at stock boost)";
@@ -73,4 +69,6 @@ in
         };
       };
     };
+
+    system.stateVersion = "25.11";
 }
