@@ -198,11 +198,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794579006,
-        "narHash": "sha256-xpSNqizOLYPuFpknwyZHp0sB6KuY13LCJNTuUm0Z6ts=",
+        "lastModified": 1795301614,
+        "narHash": "sha256-GEtd8//hLhpf1YtfM5SoO3/9xTF2VsQeyxRezML+/PY=",
         "owner": "AlvaroParker",
         "repo": "helium-nix",
-        "rev": "f039d4ff68d2b69e6dd71abb6eec6f4df9483670",
+        "rev": "00f533da2717daa60dde545006d1a55a7d3b9522",
         "type": "github"
       },
       "original": {
